@@ -1,0 +1,11 @@
+- Removed journal headers, footers, emails, website URLs, volume/issue metadata
+- Preserved logical document structure (title, abstract, sections, subsections)
+- Normalized line breaks while keeping paragraph boundaries intact
+- Prevented sentence bleed across page boundaries
+- Converted bullet symbols (•) into standard markdown-style lists
+- Retained section numbering (1, 2.1, 3.1, etc.) for section-aware retrieval
+- Separated author and affiliation metadata from main body
+- Removed page numbers while keeping page-level document grouping
+- References preserved as plain text (not parsed into structured fields)
+- Output suitable for embedding, semantic search, and RAG pipelines
+- Further improvements possible: citation parsing, table handling, and section-based chunking
