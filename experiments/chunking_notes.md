@@ -1,0 +1,11 @@
+- Chunking performed at page level (1 chunk per page)
+- Chunk IDs follow format: <source>_p<page>_c<index>
+- Each chunk currently contains multiple logical sections and subsections
+- Document headers, footers, and journal metadata are still present inside chunks
+- Sentence boundaries across pages are broken (e.g., “robotics” → “and game AI”)
+- No semantic or section-based chunking applied
+- Chunk size is large and uneven, risking embedding dilution
+- Bullet lists and section headers flattened into paragraph text
+- References included in same chunk as conclusion (not isolated)
+- Chunks are embedding-ready but not retrieval-optimized
+- Future improvement: chunk by section/subsection with overlap to preserve context and improve semantic recall
