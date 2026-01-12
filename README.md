@@ -27,6 +27,8 @@ Local LLM (RAG Answer Generation)
 
 ---
 
+**Note:** Small processed data samples are included under `data/processed/` to make the pipeline reproducible and easier to review.
+
 ## Module 1: Document Ingestion
 
 - Ingests PDF documents page-by-page
@@ -82,16 +84,26 @@ them using a local vector database for meaning-based retrieval.
   - multi-qa-MiniLM-L6-cos-v1
 - Embeddings are normalized to enable cosine similarity search
 
+### Evaluation Scripts
+
+All embedding evaluations and comparisons are implemented as standalone scripts
+under the `experiments/` directory, including:
+- Multi-model embedding comparison
+- Similarity score inspection
+- Confidence-based “no answer” detection
+- Retrieval failure case analysis
+
 ### Vector Indexing
 - FAISS (IndexFlatIP) used for exact similarity search
 - Stores embeddings locally with associated chunk metadata
 - Enables fast Top-K semantic retrieval
 
-### Model Evaluation & Analysis
+### Model Evaluation & Comparison
 - Multiple embedding models compared using the same document corpus
 - Real document-based queries used for evaluation
 - Similarity scores inspected to analyze ranking behavior
 - Failure cases documented where retrieval was weak or ambiguous
+- Detailed observations recorded in model comparison notes
 
 **Key insight:**  
 Most hallucinations originate from poor retrieval quality rather than
