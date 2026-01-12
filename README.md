@@ -11,17 +11,17 @@ production-grade GenAI system instead of relying on black-box APIs.
 
 ## Architecture Overview
 
-Raw Documents (PDFs)
+Raw Documents (PDFs)<br>
   ↓<br>
-Page-Level Ingestion
+Page-Level Ingestion<br>
   ↓<br>
-Text Cleaning & Normalization
+Text Cleaning & Normalization<br>
   ↓<br>
-Semantic Chunking
+Semantic Chunking<br>
   ↓<br>
-Embeddings & Vector Search
+Embeddings & Vector Search<br>
   ↓<br>
-Retriever (Top-K Context)
+Retriever (Top-K Context)<br>
   ↓<br>
 Local LLM (RAG Answer Generation)
 
