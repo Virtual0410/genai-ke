@@ -1,15 +1,17 @@
 # GenAI Knowledge Engine
 
-An end-to-end document processing pipeline designed for Retrieval-Augmented Generation (RAG) systems.
+A fully local, end-to-end Retrieval-Augmented Generation (RAG) system
+built from first principles, focusing on data quality, semantic retrieval,
+traceability, and hallucination control.
 
-This project incrementally builds the core components required for a production-grade GenAI system,
-starting from raw document ingestion to clean, retrievable knowledge units.
+This project incrementally constructs the core components of a
+production-grade GenAI system instead of relying on black-box APIs.
 
 ---
 
 ## Architecture Overview
 
-Raw PDFs
+Raw Documents (PDFs)
   ↓
 Page-Level Ingestion
   ↓
@@ -17,19 +19,23 @@ Text Cleaning & Normalization
   ↓
 Semantic Chunking
   ↓
-(Embeddings & Retrieval — upcoming)
+Embeddings & Vector Search
+  ↓
+Retriever (Top-K Context)
+  ↓
+Local LLM (RAG Answer Generation)
 
 ---
 
 ## Module 1: Document Ingestion
 
 - Ingests PDF documents page-by-page
-- Preserves source file and page numbers
-- Enables traceability and grounded citations
+- Preserves source filename and page numbers
+- Enables precise traceability and grounded citations
 
-**Why page-level ingestion?**
-Page-level granularity allows precise retrieval, debugging, and hallucination analysis
-by tracing generated answers back to their original source.
+**Why page-level ingestion?**  
+Page-level granularity allows debugging hallucinations and tracing
+generated answers back to their original source.
 
 ---
 
@@ -37,46 +43,80 @@ by tracing generated answers back to their original source.
 
 - Removes repeated headers, footers, and page numbers
 - Normalizes whitespace and broken line structures
-- Preserves original document metadata
+- Preserves original metadata for auditability
 
 **Design principle:**  
-Cleaning is deliberately separated from loading to ensure reproducibility,
-debuggability, and iterative improvement without re-ingesting raw documents.
+Cleaning is intentionally separated from loading to allow reproducibility
+and iterative improvement without re-ingesting raw documents.
 
 ---
 
 ## Module 3: Chunking Strategy
 
-Two chunking approaches are implemented:
+Text is split into retrievable knowledge units using two approaches:
 
 ### Fixed-Size Chunking
-- Splits text into overlapping fixed-length segments
+- Splits text into overlapping fixed-length chunks
 - Used as a baseline for comparison
 
 ### Semantic Chunking
-- Splits text along natural paragraph and section boundaries
-- Preserves semantic coherence and improves retrieval precision
+- Splits text along natural paragraph boundaries
+- Preserves semantic coherence
+- Improves retrieval precision and reduces noise
 
-Each chunk retains metadata (source, page, position) to support
-citations, trust, and system observability.
+Each chunk retains metadata (source, page, chunk ID) to support
+citations and debugging.
+
+---
+
+## Module 4: Embeddings & Vector Search (Day 4)
+
+This module converts text chunks into semantic embeddings and indexes
+them using a local vector database for meaning-based retrieval.
+
+### Embedding Generation
+- Uses SentenceTransformers to generate normalized embeddings
+- Multiple embedding models evaluated:
+  - all-MiniLM-L6-v2
+  - all-mpnet-base-v2
+  - multi-qa-MiniLM-L6-cos-v1
+- Embeddings are normalized to enable cosine similarity search
+
+### Vector Indexing
+- FAISS (IndexFlatIP) used for exact similarity search
+- Stores embeddings locally with associated chunk metadata
+- Enables fast Top-K semantic retrieval
+
+### Model Evaluation & Analysis
+- Multiple embedding models compared using the same document corpus
+- Real document-based queries used for evaluation
+- Similarity scores inspected to analyze ranking behavior
+- Failure cases documented where retrieval was weak or ambiguous
+
+**Key insight:**  
+Most hallucinations originate from poor retrieval quality rather than
+LLM behavior. Improving embeddings and chunking directly improves
+answer reliability.
 
 ---
 
 ## Project Philosophy
 
-- Prioritizes data quality over prompt engineering
-- Treats hallucinations as retrieval and data issues
-- Emphasizes traceability and explainability
+- Data quality > prompt engineering
+- Retrieval quality > model size
+- Traceability and explainability are first-class concerns
+- LLMs are treated as interchangeable generation layers
 
 ---
 
-## Status
+## Current Status
 
 - [x] PDF Ingestion
-- [x] Text Cleaning
-- [x] Chunking
-- [ ] Embeddings & Vector Indexing
-- [ ] Retrieval & RAG
-- [ ] Evaluation & Hallucination Analysis
+- [x] Text Cleaning & Normalization
+- [x] Semantic Chunking
+- [x] Embeddings & Vector Search (FAISS)
+- [ ] Retrieval Engineering (Hybrid Search & Ranking)
+- [ ] Local LLM Integration (RAG)
+- [ ] Evaluation & Hallucination Control
 - [ ] Deployment
 
