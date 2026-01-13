@@ -71,7 +71,7 @@ citations and debugging.
 
 ---
 
-## Module 4: Embeddings & Vector Search (Day 4)
+## Module 4: Embeddings & Vector Search
 
 This module converts text chunks into semantic embeddings and indexes
 them using a local vector database for meaning-based retrieval.
@@ -112,23 +112,101 @@ answer reliability.
 
 ---
 
-## Project Philosophy
+## Module 5: Retrieval Engineering
 
-- Data quality > prompt engineering
-- Retrieval quality > model size
-- Traceability and explainability are first-class concerns
-- LLMs are treated as interchangeable generation layers
+This module implements a **production-grade retrieval layer** that decides *what context is allowed to reach the LLM*.
+
+Instead of relying on raw vector search, the system applies multiple retrieval signals,
+ranking logic, and confidence checks to improve answer quality and prevent hallucinations.
 
 ---
 
-## Current Status
+### Retrieval Pipeline
 
-- [x] PDF Ingestion
-- [x] Text Cleaning & Normalization
-- [x] Semantic Chunking
-- [x] Embeddings & Vector Search (FAISS)
-- [ ] Retrieval Engineering (Hybrid Search & Ranking)
-- [ ] Local LLM Integration (RAG)
-- [ ] Evaluation & Hallucination Control
-- [ ] Deployment
+User Query  
+→ Query Embedding  
+→ Semantic Retrieval (FAISS)  
+→ Keyword Retrieval (BM25-lite)  
+→ Merge & Deduplicate  
+→ Reranking (Intent-aware)  
+→ Confidence Check  
+→ Final Context (or NO_CONTEXT)
+
+---
+
+### Semantic Retrieval
+
+- Uses sentence-transformer embeddings with FAISS
+- Retrieves top-K semantically similar chunks
+- Applies a similarity score threshold to filter weak matches
+
+This ensures only relevant semantic context is considered.
+
+---
+
+### Keyword-Based Retrieval (BM25-lite)
+
+- Performs token-based matching for exact terms
+- Complements semantic search where embeddings may fail
+- Useful for acronyms, section titles, and specific terminology
+
+Semantic and keyword retrieval are combined to improve recall.
+
+---
+
+### Hybrid Retrieval Strategy
+
+Results from semantic and keyword retrievers are:
+- Normalized into a unified `{score, data}` schema
+- Merged and deduplicated by `chunk_id`
+
+This guarantees a consistent downstream pipeline.
+
+---
+
+### Reranking Logic (Intent-Aware)
+
+Retrieved chunks are reranked using heuristic rules:
+- Penalize very short or very long chunks
+- Boost chunks matching query intent (e.g. “future”, “trends”)
+- Penalize abstracts and introductions for specific queries
+
+This improves precision by prioritizing *answer-bearing sections*
+over semantically dense but unhelpful text.
+
+---
+
+### Confidence & Hallucination Control
+
+Before generation, the system checks:
+- Whether enough high-quality context exists
+- Whether similarity scores meet minimum thresholds
+
+If context is insufficient, the system refuses to answer instead of hallucinating.
+
+> “I don’t know” is treated as a feature, not a failure.
+
+---
+
+### Why This Matters
+
+Most hallucinations in RAG systems are retrieval failures, not model failures.
+
+This retrieval layer:
+- Improves grounding
+- Reduces noise
+- Makes failures explicit and debuggable
+- Enables safer, more trustworthy GenAI behavior
+
+---
+
+## Status
+
+- [x] Document Ingestion
+- [x] Cleaning & Normalization
+- [x] Chunking
+- [x] Embeddings & Vector Indexing
+- [x] Retrieval Engineering (Hybrid, Reranking, Confidence)
+- [ ] Local LLM Integration
+- [ ] End-to-End RAG Chatbot
 
