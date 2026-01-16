@@ -1,0 +1,1562 @@
+[
+  {
+    "chunk_id": "doc_5dbefb04_chunk_1_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 1,
+    "text": "JournalofMachineLearningResearch25(2024)1-27 Submitted7/22;Revised11/23;Published1/24\nDecorrelated Variable Importance\nIsabella Verdinelli isabella@stat.cmu.edu\nDepartment of Statistics\nCarnegie Mellon University\n5000 Forbes Ave.\nPittsburgh, PA 15213, USA\nLarry Wasserman larry@stat.cmu.edu\nDepartment of Statistics\nCarnegie Mellon University\n5000 Forbes Ave.\nPittsburgh, PA 15213, USA\nEditor: Eric Laber\nAbstract\nBecause of the widespread use of black box prediction methods such as random forests\na"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_1_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 1,
+    "text": "ck box prediction methods such as random forests\nand neural nets, there is renewed interest in developing methods for quantifying variable\nimportance as part of the broader goal of interpretable prediction. A popular approach is\nto define a variable importance parameter \u2014 known as LOCO (Leave Out COvariates) \u2014\nbased on dropping covariates from a regression model. This is essentially a nonparametric\nversionofR2. Thisparameterisverygeneralandcanbeestimatednonparametrically, but\nit can be hard to i"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_1_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 1,
+    "text": "stimatednonparametrically, but\nit can be hard to interpret because it is affected by correlation between covariates. We\npropose a method for mitigating the effect of correlation by defining a modified version of\nLOCO. This new parameter is difficult to estimate nonparametrically, but we show how to\nestimate it using semiparametric models.\nKeywords: Correlation, Nonparametric Estimators, Prediction, Variable Importance\n1 Introduction\nDue to the increasing popularity of black box prediction method"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_1_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 1,
+    "text": "creasing popularity of black box prediction methods like random forests and\nneural nets, there has been renewed interest in the problem of quantifying variable impor-\ntance in regression. Consider predicting Y \u2208 R from covariates (X,Z) where X \u2208 Rg and\nZ \u2208 Rh. We have separated the covariates into X and Z where X represents the covariates\nwhose importance we wish to assess. In what follows, we let U = (X,Z,Y) denote all the\nvariables. Define \u00b5(x,z) = E[Y|X = x,Z = z] so that\nY = \u00b5(X,Z)+(cid:15)\n"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_1_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 1,
+    "text": "z) = E[Y|X = x,Z = z] so that\nY = \u00b5(X,Z)+(cid:15)\nwhere E[(cid:15)|X,Z] = 0.\nA popular measure of the importance of X is\n\u03c8 = E[(\u00b5(Z)\u2212\u00b5(X,Z))2] = E[(Y \u2212\u00b5(Z))2]\u2212E[(Y \u2212\u00b5(X,Z))2]. (1)\nL\nwhere\u00b5(Z) = E[Y|Z = z]. Uptoscaling,\u03c8 isanonparametricversionoftheusualR2 from\nL\nstandard regression. This was called LOCO (Leave Out COvariates) in Lei et al. (2018)\n(cid:13)c2024IsabellaVerdinelliandLarryWasserman.\nLicense: CC-BY4.0,seehttps://creativecommons.org/licenses/by/4.0/. Attributionrequirementsareprovided"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_1_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 1,
+    "text": "censes/by/4.0/. Attributionrequirementsareprovided\nathttp://jmlr.org/papers/v25/22-0801.html."
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_2_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 2,
+    "text": "Verdinelli and Wasserman\nand Rinaldo et al. (2019) and has been further studied recently in Williamson et al. (2021),\nWilliamson et al. (2020) and Zhang and Janson (2020). The parameter \u03c8 is appealing\nL\nbecause it is very general and easy to interpret. But it suffers from some problems. In\nparticular, the value of \u03c8 depends on the correlation between X and Z. When X and\nL\nZ are highly correlated, \u03c8 will be near 0 since removing X has little effect. In some\napplications, this might be undesirable"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_2_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 2,
+    "text": "t. In some\napplications, this might be undesirable as it obscures interpretability. We refer to this\nproblem as correlation distortion. Another, more technical problem with LOCO, is its\nquadratic nature which causes some issues when constructing confidence intervals.\nIn this paper, we define a modified version of \u03c8 denoted by \u03c8 that is invariant to the\nL 0\ncorrelation between X and Z. There is a tradeoff: the modified parameter \u03c8 is free from\n0\ncorrelation distortion but it is more difficult to "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_2_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 2,
+    "text": "orrelation distortion but it is more difficult to estimate than \u03c8 . In a sense, we remove the\nL\ncorrelation from the estimand at the expense of larger confidence intervals. This is similar\nto estimating a coefficient in a linear regression where the value of the regression coefficient\ndoes not depend on the correlation between X and Z while the width of the confidence\ninterval does. To reduce the difficulties in estimating \u03c8 , we approximate \u00b5(x,z) with the\n0\nsemiparametric model \u00b5(x,z) = \u03b2(z)Tx"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_2_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 2,
+    "text": "z) with the\n0\nsemiparametric model \u00b5(x,z) = \u03b2(z)Tx+f(z).\nRelated Work. Assessing variable importance is an active area of research. Recent\npapers on LOCO include Lei et al. (2018); Rinaldo et al. (2019); Williamson et al. (2021,\n2020); Zhang and Janson (2020). Another approach is to use derivatives of the regression\nfunctionassuggestedinSamarov(1993), andhasreceivedrenewedattentioninthemachine\nlearning literature (Ribeiro et al., 2016). There has been a surge of interest in an approach\nbasedonSh"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_2_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 2,
+    "text": " been a surge of interest in an approach\nbasedonShapleyvalues,seeforexample,Messalasetal.(2019);Aasetal.(2019);Lundberg\nand Lee (2016); Covert et al. (2020); Fryer et al. (2020); Covert and Lee (2020); Israeli\n(2007); B\u00b4enard et al. (2021). We discuss derivatives and Shapley values in Section 5.\nAnother paper that uses semiparametric models for intepretability is Sani et al. (2020) but\nthatpaperdoesnotfocusonvariableimportance. LohandZhou(2021)containsareviewof\nseveral feature importance methods"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_2_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 2,
+    "text": "ntainsareviewof\nseveral feature importance methods and, in particular, discusses the importance of missing\ndata.\nPaper Outline. In Section 2 we describe some issues related to LOCO and this leads\nus to define a few modified versions of the parameter. In Section 3 we discuss inference\nfor the parameters. Section 4 contains some simulation studies. Section 5 discusses other\nissues and other measures of variable importance. A concluding discussion is in Section 6.\nTechnical details and proofs are i"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_2_6",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 2,
+    "text": "s in Section 6.\nTechnical details and proofs are in an appendix.\n2 Issues With LOCO\nThe parameter \u03c8 is general and it is easy to obtain point estimates for it; see Section 3.1.\nL\nBut it does have two shortcomings which we now discuss.\n2.1 Issue 1: Inference For Quadratic Functionals\nThe first, and less serious issue, is that \u03c8 is a quadratic parameter and it is difficult to get\nL\nconfidence intervals for quadratic parameters because their limiting distribution and rate of\n2"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_2_7",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 2,
+    "text": "g distribution and rate of\n2"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_3_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 3,
+    "text": "Variable Importance\nconvergence change as \u03c8 approaches 0. This is actually a common problem but it receives\nL\nlittle attention. Many other parameters have this problem, including distance correlation\n(Sz\u00b4ekely et al., 2007), RKHS correlations (Sejdinovic et al., 2013) and kernel two-sample\nstatistics (Gretton et al., 2012) among others.\nToillustrate,considerthefollowingtoyexample. LetY ,...,Y \u223c N(\u00b5,\u03c32)andconsider\n1 n\n\u221a\nestimating \u03c8 = \u00b52 with \u03c8(cid:98) = Y 2 . When \u00b5 (cid:54)= 0, we have n(\u03c8(cid:"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_3_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 3,
+    "text": "d:98) = Y 2 . When \u00b5 (cid:54)= 0, we have n(\u03c8(cid:98)\u2212\u03c8) (cid:32) N(0,\u03c42) for some\nn\n\u03c42. When \u00b5 = 0, \u03c8(cid:98)\u223c \u03c32\u03c72/n. When \u00b5 is close to 0, its distribution is neither Normal nor\n1 \u221a\nchi-squared, and the rate of convergence can be anything between 1/n and 1/ n.\nMore generally, when dealing with a quadratic functional \u03c8, it is often the case that\nan estimator \u03c8(cid:98) converges to a Normal at a n\u22121/2 rate when \u03c8 (cid:54)= 0 but at the null, where\n\u03c8 = 0, the influence function for the parameter"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_3_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 3,
+    "text": "re\n\u03c8 = 0, the influence function for the parameter vanishes, the rate becomes n\u22121 and the\nlimiting distribution is typically a combination of \u03c72 random variables. Near the null, we\nget behavior in between these two cases. A valid confidence interval C should satisfy\nn\nP(\u03c8 \u2208 C ) \u2192 1\u2212\u03b1 even if \u03c8 is allowed to change with n. In particular, we want to allow\nn n n\n\u03c8 \u2192 0. Finding a confidence interval with this uniformly correct coverage, with length\nn\nn\u22121/2 away from the null and length n\u22121 at the nu"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_3_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 3,
+    "text": "\nn\u22121/2 away from the null and length n\u22121 at the null is, to the best of our knowledge, an\nunsolved problem.\nOurproposalistoconstructaconservativeconfidenceintervalthatdoesnothavelength\n(cid:112)\nO(1/n) at the null. We replace the standard error se of \u03c8(cid:98) with se2+c2/n where c is a\nconstant. We take c = (Var[Y])2 to put the quantity on the right scale, but other constants\ncould be used. This leads to valid confidence intervals but they are conservative near the\nnull as they shrink at rate n"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_3_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 3,
+    "text": "onservative near the\nnull as they shrink at rate n\u22121/2 instead of n\u22121.\nWe are only aware of two other attempts to address this issue. Both involve expanding\nthewidthoftheconfidenceintervaltobeO(n\u22121/2). Daietal.(2021)addednoiseoftheform\n\u221a\ncZ/ n to the estimator, where Z \u223c N(0,1). They choose c by permuting the data many\ntimes and finding a c that gives good coverage under the simulated permutations. However,\nthis is computationally expensive and adding noise seems unnecessary. Williamson et al.\n("
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_3_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 3,
+    "text": "dding noise seems unnecessary. Williamson et al.\n(2020) deal with this problem by writing \u03c8 as a sum of two parameters \u03c8 = \u03c8 +\u03c8 such\n1 2\nthat neither \u03c8 nor \u03c8 vanish when \u03c8 = 0. Then, they estimate \u03c8 and \u03c8 on separate\n1 2 \u221a1 2\nsplits of the data. This again amounts to adding noise of size O(1/ n).\nAll three approaches are basically the same; they have the effect of expanding the\nconfidence interval by O(n\u22121/2) which maintains validity at the expense of efficiency at the\nnull. Our approach has the"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_3_6",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 3,
+    "text": "se of efficiency at the\nnull. Our approach has the virtue of being simple and fast. It does not require adding\nnoise, extra calculations or doing an extra split of the data.\nTo see that expanding the standard error does lead to an interval with correct coverage,\nlet \u03c8(cid:98) denote an estimator of a parameter \u03c8\nn\nwhich we allow to change with n. We are\nconcerned with the case were the bias b satisfies b = o(n\u22121/2) and the variance v satisfies\nn n n\nv = o(1/n). (The variance would be of order 1/"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_3_7",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 3,
+    "text": "n n\nv = o(1/n). (The variance would be of order 1/n in the non-degenerating case.) Then, by\nn\n(cid:112)\nMarkov\u2019s inequality, the non-coverage of the interval \u03c8(cid:98)n \u00b1z\n\u03b1/2\nse2+c2/n is\n(cid:16) (cid:112) (cid:17) (cid:16) (cid:112) (cid:17)\nP |\u03c8(cid:98)n \u2212\u03c8\nn\n| > z\n\u03b1/2\nse2+c2/n \u2264 P |\u03c8(cid:98)n \u2212\u03c8\nn\n| > z\n\u03b1/2\nc2/n\nn n\n\u2264\ncz2\nE[|\u03c8(cid:98)n \u2212\u03c8\nn\n|2] =\ncz2\n(b2\nn\n+v\nn\n) = o(1).\n\u03b1/2 \u03b1/2\n3"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_4_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 4,
+    "text": "Verdinelli and Wasserman\n2.2 Issue 2: Correlation Distortion\nThe second and more pernicious problem is that \u03c8 depends on the correlation between X\nL\nand Z. In particular, if X and Z are highly correlated, then \u03c8 will typically be close to\nL\n0. We call this, correlation distortion. There may be applications where this is acceptable.\nBut in some cases we may want to alleviate this distortion and that is the focus of this\npaper.\nTo appreciate the effect of correlation distortion, consider the linea"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_4_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 4,
+    "text": "fect of correlation distortion, consider the linear model Y = \u03b2X +\n\u03b8Z + (cid:15). In this case, a natural measure of variable importance is \u03b2 which is unaffected\nby correlation between X and Z. The standard error of the estimate \u03b2(cid:98) is affected by\nthe correlation but the estimand itself is not. For this model, \u03c8 = \u03b22\u03b32 where \u03b32 =\nL\nE[(X \u2212 \u03bd(Z))2] and \u03bd(z) = E[X|Z = z]. This makes it clear that \u03c8 \u2192 0 as X and Z\nL\nbecome more correlated. The same fate befalls the partial correlation \u03c1 betwee"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_4_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 4,
+    "text": "same fate befalls the partial correlation \u03c1 between Y and X\nwhich in this model is \u03c1 = (1+ \u03b22\u03c32 )\u22121/2 where \u03c32 = Var[(cid:15)]. Again, \u03c1 \u2192 0 as \u03b3 \u2192 0.\n\u03b32\nTodealwiththisproblem, wedefineamodifiedLOCOparameter\u03c8 whichisunaffected\n0\nby the dependence between X and Z. Let p (x,y,z) = p(y|x,z)p(x)p(z). Then p is the\n0 0\ndistribution that is closest to p in Kullback-Leibler distance subject to making X and Z\nindependent. We define\n\u03c8 = E [(\u00b5 (X,Z)\u2212\u00b5 (Z))2]. (2)\n0 0 0 0\nA simple calculation shows that \u00b5 "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_4_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 4,
+    "text": "2]. (2)\n0 0 0 0\nA simple calculation shows that \u00b5 (z) = E [Y|Z = z] = (cid:82) \u00b5(x,z)p(x)dx and so\n0 0\n(cid:90)\n\u03c8 = (\u00b5 (x,z)\u2212\u00b5 (z))2p(x)p(z)dxdz. (3)\n0 0 0\nWe can think of \u03c8 as a counterfactual quantity answering the question: what would the\n0\nchange in \u00b5(X,Z) be if we dropped X and had X and Z been independent.\nThis parameter completely eliminates the correlation distortion but, as we show in our\nsimulations, it can be hard to get an accurate estimate of \u03c8 . In particular, nonparametric\n0\nconfi"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_4_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 4,
+    "text": "timate of \u03c8 . In particular, nonparametric\n0\nconfidence intervals are wide. A simple, but somewhat ad-hoc solution, is to first remove\nZ(cid:48)s that are highly correlated with X. That is, define \u03c8 = E[(\u00b5(V)\u2212\u00b5(X,V))2] where\nj 1\nV = (Z : |\u03c1(X,Z )| \u2264 t) for some t where \u03c1 is a measure of dependence.\nj j\nThe main solution we propose is to use the semiparametric model \u00b5(x,z) = xT\u03b2(z)+\nf(z). Under this model, one can show that \u03c8 takes the form tr (cid:0) \u03a3 E[\u03b2(Z)\u03b2(Z)T] (cid:1) where\n0 X\n\u03a3 = Var[X]. "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_4_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 4,
+    "text": "d:0) \u03a3 E[\u03b2(Z)\u03b2(Z)T] (cid:1) where\n0 X\n\u03a3 = Var[X]. (See appendix 8.4 for details). However, this parameter is still difficult to\nX\nestimate so we propose the following two simpler models. First, let \u00b5(x,z) = \u03b2Tx+f(z).\nThen \u03c8 becomes\n0\n\u03c8 = \u03b2T\u03a3 \u03b2. (4)\n2 X\nThe second model is\n(cid:88)(cid:88)\n\u00b5(x,z) = \u03b2Tx+ \u03b3 x z +f(z). (5)\njk j k\nj j\nIn Section 3.5 we show that \u03c8 then becomes\n0\n\u03c8 = \u03b8T\u2126\u03b8 (6)\n3\nwhere\n(cid:40) (cid:41)\u22121 (cid:34)\n(cid:18) (cid:19) (cid:18) (cid:19)\n(cid:35)\n\u03b8 = E[Z(cid:101)Z(cid:101) T"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_4_6",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 4,
+    "text": "18) (cid:19)\n(cid:35)\n\u03b8 = E[Z(cid:101)Z(cid:101) T \u2297(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))T] E Y \u2212\u00b5(Z) Z(cid:101)\u2297(X \u2212\u03bd(Z)) .\n4"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_5_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 5,
+    "text": "Variable Importance\n\u03c8 = (cid:82) (cid:82) (\u00b5(x,z)\u2212\u00b5 (z))2p(x)p(z)dxdz \u03c8 = E[(\u00b5(X,V)\u2212\u00b5(V))2]\n0 0 1\n\u03c8 = \u03b2T\u03a3 \u03b2 \u03c8 = \u03b8T\u2126\u03b8\n2 X 3\n(cid:82)\n\u00b5 (z) = \u00b5(x,z)p(x)dx V = (Z : |\u03c1(X,Z )| \u2264 t)\n0 j j\n(cid:20) 1 mT (cid:21)\nZ(cid:101) T = (1,ZT) \u2126 = \u03a3\nX\n\u2297\nm \u03a3 +m\nZ\nmT\nZ Z Z Z\n\u03b2 = E[(Y \u2212\u00b5(Z))(X \u2212\u03bd(Z))]/E[(X \u2212\u03bd(Z))2]\n(cid:40) (cid:41)\u22121 (cid:34)\n(cid:18) (cid:19) (cid:18) (cid:19)\n(cid:35)\n\u03b8 = E[Z(cid:101)Z(cid:101) T \u2297(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))T] E Y \u2212\u00b5(Z) Z(cid:101)\u2297(X \u2212\u03bd(Z))\nTable 1: Summary of Decorrelated Parameters\n.\n"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_5_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 5,
+    "text": "Z))\nTable 1: Summary of Decorrelated Parameters\n.\n\u03bd(z) = E[X|Z = z], Z(cid:101) = (1,Z) and\n(cid:18) 1 mT (cid:19)\n\u2126 = \u03a3\nX\n\u2297E[Z(cid:101)Z(cid:101) T] = \u03a3\nX\n\u2297\nm \u03a3 +m\nZ\nmT\n,\nZ Z Z Z\nm = E[Z] and \u03a3 = Var[Z]. Table 1 summarizes the expressions for the parameters.\nZ Z\nRemark: Using the semiparametric model simplifies statistical inference for \u03c8 . Of\n0\ncourse, using a model always carries risks. In particular, if the model is not a reasonable\napproximationto\u00b5(x,z)thenwecouldbeintroducingbias. Therefor"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_5_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 5,
+    "text": "tionto\u00b5(x,z)thenwecouldbeintroducingbias. Therefore, asinallcaseswherea\nmodel is used, one should be aware that if the model is wrong then we are actually estimating\nthe projection of \u00b5(x,z) onto the model and then \u03c8 captures the importance of X in the\n0\nprojected model.\nRemark: In all the above definitions, we can replace X with b(X) = (b (X),...,b (X))\n1 k\nfor a given set of basis functions b ,...,b to make the model more flexible. For example,\n1 k\nwe can take b(X) = (X,X2,X3) or an orthogonal"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_5_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 5,
+    "text": "\n1 k\nwe can take b(X) = (X,X2,X3) or an orthogonalized version of the polynomials, which is\nwhat we use in several of our examples.\nInthesesemiparametricmodels,wecanestimatethenuisancefunctions\u03bd(z) = E[X|Z =\nz] and \u00b5(z) either nonparametrically or parametrically.\n3 Inference\nIn this section we discuss estimation of \u03c8 \u2208 {\u03c8 ,\u03c8 ,\u03c8 ,\u03c8 ,\u03c8 }. For \u03c8 ,\u03c8 and \u03c8 we\nL 0 1 2 3 0 2 3\nuse one-step estimation which we now briefly review. See Hines et al. (2021) for a recent\ntutorial on one-step estimators. Let "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_5_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 5,
+    "text": "for a recent\ntutorial on one-step estimators. Let \u03c8(\u03b3) be a parameter with efficient influence function\n\u03c6(u,\u03b3,\u03c8) where \u03b3 denotes nuisance functions. We split the data into two groups D and D\n0 1\n5"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_6_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 6,
+    "text": "Verdinelli and Wasserman\nand we estimate \u03b3 from D . Splitting the data is a common technique in semiparametric\n0\ninferenceasitleadstocentrallimittheoremsunderweakerconditionsthanwouldotherwise\nbe necessary. The one-step estimator is\n1 (cid:88)\n\u03c8(cid:98)= \u03c8(cid:98)pi + \u03c6(U\ni\n,\u03b3\n(cid:98)\n,\u03c8(cid:98)pi )\nn\ni\nwhere \u03c8(cid:98)pi = \u03c8(\u03b3\n(cid:98)\n) is the plug-in estimator and the average is over D\n1\n. This estimator\ncomes from the von Mises expansion of \u03c8(\u03b3) around a point \u03b3 given by \u03c8(\u03b3) = \u03c8(\u03b3) +\n(cid:8"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_6_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 6,
+    "text": "(\u03b3) around a point \u03b3 given by \u03c8(\u03b3) = \u03c8(\u03b3) +\n(cid:82)\n\u03c6(u,\u03b3)dP(u)+R where R is the remainder. Alternatively, we can define \u03c8(cid:98)as the solution\nto the estimating equation\nn\u22121(cid:80)\n\u03c6(U ,\u03b3,\u03c8) = 0.\ni i (cid:98)\nBoth estimators have second order bias ||\u03b3 \u2212\u03b3||2. Under appropriate conditions, both\n\u221a (cid:98)\nestimators satisfy n(\u03c8(cid:98)\u2212\u03c8) (cid:32) N(0,\u03c42) where \u03c42 = E[\u03c62(U,\u03b3,\u03c8)]. The key condition for\nthis central limit theorem to hold is that ||\u03b3\u2212\u03b3||2 = o (n\u22121/2) which holds under standard\n("
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_6_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 6,
+    "text": " ||\u03b3\u2212\u03b3||2 = o (n\u22121/2) which holds under standard\n(cid:98) P\nsmoothness assumptions. For example, if \u03b3 is in a Holder class of smoothness s, then an\noptimal estimator \u03b3 satisfies ||\u03b3 \u2212\u03b3||2 = O (n\u22122s/(2s+d)) = o (n\u22121/2) when s > d/2. The\n(cid:98) (cid:98) P P\nplugin estimator has first order bias ||\u03b3 \u2212\u03b3|| which will never be o (n\u22121/2).\n(cid:98) P\nThe usual confidence interval is \u03c8(cid:98)\u00b1z\n\u03b1/2\nse where se2 = \u03c4\n(cid:98)\n2/n and \u03c4\n(cid:98)\n2 = n\u22121(cid:80)\ni\n\u03c62(U\ni\n,\u03b3\n(cid:98)\n).\nBut we find that th"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_6_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 6,
+    "text": "id:80)\ni\n\u03c62(U\ni\n,\u03b3\n(cid:98)\n).\nBut we find that this often underestimates the standard error. Instead, we use a different\napproach described in Section 3.6. We consider three different estimators for the nuisance\nfunctions \u00b5(z) and \u03bd(z): (i) linear, (ii) additive and (iii) random forests.\n3.1 Estimating \u03c8\nL\nWilliamsonetal.(2021)foundtheefficientinfluencefunctionfor\u03c8 . However,inWilliamson\nL\net al. (2020) the authors note that one can avoid having to use the influence function by\nrewriting \u03c8 as\nL"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_6_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 6,
+    "text": " to use the influence function by\nrewriting \u03c8 as\nL\n\u03c8 = E[(Y \u2212\u00b5(Z))2]\u2212E[(Y \u2212\u00b5(X,Z))2].\nL\nIt is easy to check that the corresponding plugin estimator\n1 (cid:88) 1 (cid:88)\n\u03c8(cid:98)L = (Y\ni\n\u2212\u00b5\n(cid:98)\n(Z\ni\n))2\u2212 (Y\ni\n\u2212\u00b5\n(cid:98)\n(X\ni\n,Z\ni\n))2\nn n\ni i\nalreadyhassecondorderbiasO(||\u00b5\u2212\u00b5||2)sothatusingtheinfluencefunctionisunnecessary.\n(cid:98)\n3.2 Estimating \u03c8\n0\nWe first derive the efficient, nonparametric estimator of \u03c8 and then we discuss some issues.\n0\nRecall that U = (X,Y,Z).\nTheorem 1 Let\u03c8 = \u03c8 (\u00b5"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_6_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 6,
+    "text": ".\n0\nRecall that U = (X,Y,Z).\nTheorem 1 Let\u03c8 = \u03c8 (\u00b5,p) = (cid:82) (cid:82) (\u00b5(x,z)\u2212\u00b5 (z))2p(x)p(z)dxdz. Theefficientinfluence\n0 0 0\nfunction is\n\u03c6(U,\u00b5,p) = (cid:82) (\u00b5(x,Z)\u2212\u00b5 (Z))2p(x)dx+ (cid:82) (\u00b5(X,z)\u2212\u00b5 (z))2p(z)dz\n0 0\np(X)p(Z)\n+2 (\u00b5(X,Z)\u2212\u00b5 (Z))(Y \u2212\u00b5(X,Z))\u22122\u03c8(p).\np(X,Z) 0\n6"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_7_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 7,
+    "text": "Variable Importance\nIn particular, we have the following von Mises expansion. Let (\u00b5,p) be arbitrary and let\n(\u00b5,p) denote the true functions. Then\n(cid:90) (cid:90)\n\u03c8 (\u00b5,p) = \u03c8 (\u00b5,p)+ \u03c6(u,\u00b5,p)dP(u)+R\n0 0\nwhere the remainder R satisfies\nR = O(||p \u2212p ||\u00d7||\u03b4\u2212\u03b4||)+O(||p \u2212p ||\u00d7||\u03b4\u2212\u03b4||)+O(||p \u2212p ||\u00d7||p \u2212p ||)+O(||\u03b4\u2212\u03b4||2)\nX X Z Z X X Z Z\nand \u03b4 = \u00b5(x,z) \u2212 \u00b5 (z). Hence, if ||p \u2212 p || = o (n\u22121/4), ||p \u2212 p || = o (n\u22121/4),\n0 \u221a X X P Z Z P\n||\u03b4\u2212\u03b4|| = o (n\u22121/4) then nR = o (1).\nP P\nThe one-step estimator is\n1 "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_7_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 7,
+    "text": " then nR = o (1).\nP P\nThe one-step estimator is\n1 (cid:88)\n\u03c8(cid:98)0 = \u03c8\n0\n(\u00b5\n(cid:98)\n,p\n(cid:98)\n)+ \u03c6(U\ni\n,\u00b5\n(cid:98)\n,p\n(cid:98)\n).\nn\ni\nThe estimator from solving the estimating equation is \u03c8(cid:98)=\n(2n)\u22121(cid:80)\ni\nL(U\ni\n,\u00b5\n(cid:98)\n,p\n(cid:98)\n) where\nL(U,\u00b5,p) = (cid:82) (\u00b5(x,Z)\u2212\u00b5 (Z))2p(x)dx+ (cid:82) (\u00b5(X,z)\u2212\u00b5 (z))2p(z)dz\n0 0\np(X)p(Z)\n+2 (\u00b5(X,Z)\u2212\u00b5 (Z))(Y \u2212\u00b5(X,Z)). (7)\np(X,Z) 0\nCorollary 2 Suppose that ||p\u2212p|| = o (n\u22121/4) and ||\u00b5\u2212\u00b5|| = o (n\u22121/4). When \u03c8 (cid:54)= 0,\n(cid:98) P (cid:98) "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_7_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 7,
+    "text": " (n\u22121/4). When \u03c8 (cid:54)= 0,\n(cid:98) P (cid:98) P 0\nfor either of the two estimators above,\n\u221a\nn(\u03c8(cid:98)0 \u2212\u03c8\n0\n) (cid:32) N(0,\u03c32)\nwhere \u03c32 = E[\u03c62(U,\u00b5,p)].\nIn our implementation, we estimate p(x,z),p(x),p(z) with kernel density estimators.\nWe estimate integrals with respect to the densities by sampling from the kernel estimators.\nSpecifically,\nN\n1 (cid:88)\n\u00b5 (z) = \u00b5(X\u2217,z) where X\u2217,...,X\u2217 \u223c p(x).\n(cid:98)\u2217 N (cid:98) j 1 N (cid:98)\nj=1\nSimilarly, (cid:82) (\u00b5(X,z)\u2212\u00b5 (z))2p(z) is estimated by\n(ci"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_7_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 7,
+    "text": ", (cid:82) (\u00b5(X,z)\u2212\u00b5 (z))2p(z) is estimated by\n(cid:98)0\n1 (cid:88)\n(\u00b5(X,Z\u2217)\u2212\u00b5 (Z\u2217))2 where Z\u2217,...,Z\u2217 \u223c p(z)\nN j (cid:98)0 j 1 N (cid:98)\nj\nand (cid:82) (\u00b5(x,Z)\u2212\u00b5 (Z))2p(x) is estimated by N\u22121(cid:80) (\u00b5(X\u2217,z)\u2212\u00b5 (z))2. Thus\n(cid:98)0 j j (cid:98)0\n\u03c8(cid:98)0 =\n2\n1\nn\n(cid:80)\ni\nL(U\ni\n,\u00b5\n(cid:98)\n,p\n(cid:98)\n)\n(cid:16) (cid:17)2 (cid:16) (cid:17)2\n= 1 (cid:80) (cid:80) \u00b5(X\u2217,Z )\u2212 1 (cid:80)N \u00b5(X\u2217,z) + 1 (cid:80) (cid:80) \u00b5(X ,Z\u2217)\u2212 1 (cid:80)N \u00b5(X ,Z\u2217)\nnN i j (cid:98) j i N s=1(cid:98) s nN i j (cid"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_7_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 7,
+    "text": "\u2217)\nnN i j (cid:98) j i N s=1(cid:98) s nN i j (cid:98) i j N s=1(cid:98) i s\n(cid:16) (cid:17)\n+2 (cid:80) p (cid:98) (Xi)p (cid:98) (Zi) \u00b5(X ,Z )\u2212 1 (cid:80) \u00b5(X\u2217,Z ) (Y \u2212\u00b5(X ,Z )).\nn i p\n(cid:98)\n(Xi,Zi) (cid:98) i i N j (cid:98) j i i (cid:98) i i\n7"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_8_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 8,
+    "text": "Verdinelli and Wasserman\nFinite Sample Problems. Inprinciple, \u03c8(cid:98)0 isfullyefficient. Inpractice, \u03c8(cid:98)0 canbehave\npoorly as we now explain. One of the terms in the von Mises remainder is ||\u00b5 (z)\u2212\u00b5 (z)||2.\n(cid:98)0 0\n(cid:82)\nNow \u00b5 (z) = \u00b5(x,z)p(x)dx. When X and Z are highly correlated, there will be a large\n0\nset A of x values, where there are no observed data and so \u00b5 (z) will be quite far from\nz (cid:98)0\n\u00b5 (z) because \u00b5(x,z) must suffer large bias or variance (or both) over that re"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_8_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 8,
+    "text": "ffer large bias or variance (or both) over that region. This is\n0 (cid:98)\nknown as extrapolation error. For this reason we now consider alternative versions of \u03c8 .1\n0\n3.3 Estimating \u03c8\n1\nRecall that \u03c8 = E[(\u00b5(X,V)\u2212\u00b5(V))2] where V = (Z : |\u03c1(X,Z )| \u2264 t) for some t. We\n1 j j\ntake \u03c1(X,Z ) =\n(cid:80)g\n|\u03c1(X ,Z )| where \u03c1(X ,Z ) is the Pearson correlation. We use t = .5\nj i=1 i j i j\nin our examples. For simplicity we assume that the values \u03c1(X,Z ) are distinct. In this\nj\ncase P(V(cid:98) = V) \u2192 1 as n "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_8_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 8,
+    "text": "istinct. In this\nj\ncase P(V(cid:98) = V) \u2192 1 as n \u2192 \u221e where V(cid:98) = (Z\nj\n: |\u03c1\n(cid:98)\n(X,Z\nj\n)| \u2264 t) and the randomness of\nV(cid:98) can be ignored asymptotically and \u03c8\n1\ncan be estimated in the same way as \u03c8\nL\nwith V(cid:98)\nreplacing Z.\n\u221a\nLemma 3 If ||\u00b5\n(cid:98)\n(x,v)\u2212\u00b5(x,v)|| = o\nP\n(n\u22121/4) and \u03c8\n1\n(cid:54)= 0 then n(\u03c8(cid:98)1 \u2212\u03c8\n1\n) (cid:32) N(0,\u03c42).\nAn alternative to removing correlated variables is to group together highly correlated\nvariables and only report the variable importance o"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_8_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 8,
+    "text": "ariables and only report the variable importance of the group.\n3.4 Estimating \u03c8\n2\nConsider the partially linear model Y = \u03b2TX +f(Z)+(cid:15). Then \u00b5 (z) = (cid:82) \u00b5(x,z)p(x)dx =\n0\n\u03b2Tm +f(z) where m = E[X] and so\nX X\n(cid:90) (cid:90)\n\u03c8 \u2261 (\u00b5(x,z)\u2212\u00b5 (z))2p(x)p(z)dxdz = \u03b2T\u03a3 \u03b2\n2 0 X\nand \u03b2 = E[(Y \u2212\u00b5(Z))(X \u2212\u03bd(Z))]/E[(X \u2212\u03bd(Z))2].\nThe efficient influence function for \u03c8 is\n2\n\u03c6 = 2\u03b2T\u03a3 \u03c6 +\u03b2T((X \u2212m )(X \u2212m )T)\u03b2\u2212\u03c8\nX \u03b2 X X 2\nwhere\n(cid:110) (cid:111)\n\u03c6 = \u03a3\u22121(X \u2212\u03bd(Z)) (Y \u2212\u00b5(Z))\u2212(X \u2212\u03bd(Z))T\u03b2)\n\u03b2 X\n(cid:82)\nandweh"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_8_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 8,
+    "text": " \u2212\u03bd(Z)) (Y \u2212\u00b5(Z))\u2212(X \u2212\u03bd(Z))T\u03b2)\n\u03b2 X\n(cid:82)\nandwehavethevonMisesexpansion\u03c8 (\u00b5,\u03bd,\u03b2,\u03a3 ) = \u03c8 (\u00b5,\u03bd,\u03b2,\u03a3 )+ \u03c6(u,\u00b5,\u03bd,\u03b2,\u03a3 )dP+\n2 X 2 X X\nR where the remainder R satisfies\nR = O(||\u00b5(P)\u2212\u00b5(P)||\u00d7||\u03bd(P)\u2212\u03bd(P)||)+O(||vec(\u03a3 (P))\u2212vec(\u03a3 (P))||2)\nX X\n+O(||\u03b2(P)\u2212\u03b2(P)||2)+O(||\u03b2(P)\u2212\u03b2(P)||\u00d7||vec(\u03a3 (P))\u2212vec(\u03a3 (P))||).\nX X\n1. Readersfamiliarwithcausalinferencewillrecognizethat,formally,\u00b5 (z)istheaveragetreatmenteffect\n0\nif we think of Z as a treatment and X as a confounder. But the role of treatment and confounder is\nswi"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_8_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 8,
+    "text": "r. But the role of treatment and confounder is\nswitchedwiththetreatmentbeingthemultivariatevectorZ. Thedifficultyinestimating\u00b5 (z)whenX\n0\nandZ arehighlycorrelatedisknownastheoverlapproblemincausalinference(D\u2019Amouretal.,2021).\n8"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_9_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 9,
+    "text": "Variable Importance\nWe omit the calculation of the influence function and remainder as they are standard.\nHence, if ||\u00b5(P)\u2212\u00b5(P)||\u00d7||\u03bd(P)\u2212\u03bd(P)||) = o(n\u22121/2), ||\u03b2(P)\u2212\u03b2(P)|| = o(n\u22121/4), and\n\u221a\n||vec(\u03a3 (P)) \u2212 vec(\u03a3 (P))|| = o(n\u22121/4), then nR = o(1). It is easy to verify that\nX X\n||\u03b2(P) \u2212 \u03b2(P)|| = O(||\u00b5(P) \u2212 \u00b5(P)|| \u00d7 ||\u03bd(P) \u2212 \u03bd(P)||) and so \u03c8 satisfies the double\n2\nrobustness property, namely, that the bias involves the product of two quantities. It suffices\nto estimate either \u00b5 or \u03bd accurately to get"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_9_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 9,
+    "text": "ffices\nto estimate either \u00b5 or \u03bd accurately to get a consistent estimator.\nThe one-step estimator is given by\n1 (cid:88) 2 (cid:88)\n\u03c8(cid:98)2 = \u03b2(cid:98) T(X\ni\n\u2212\u00b5\n(cid:98)\n(Z\ni\n))(X\ni\n\u2212\u00b5\n(cid:98)\n(Z\ni\n))T\u03b2(cid:98)+ \u03b2(cid:98) T\u03a3(cid:98)X \u03c6\n\u03b2\n(X\ni\n,Z\ni\n)\nn n\ni i\nwhere\n(cid:40) (cid:41)\u22121\n1 (cid:88) 1 (cid:88)\n\u03b2(cid:98)= (X\ni\n\u2212\u03bd\n(cid:98)\n(Z\ni\n))(X\ni\n\u2212\u03bd\n(cid:98)\n(Z\ni\n))T (X\ni\n\u2212\u03bd\n(cid:98)\n(Z\ni\n))(Y\ni\n\u2212\u00b5\n(cid:98)\n(Z\ni\n))\nn n\ni i\nand the sums are over D .\n1\n3.5 Estimating \u03c8\n3\nConsider the partially li"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_9_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 9,
+    "text": "D .\n1\n3.5 Estimating \u03c8\n3\nConsider the partially linear model with interactions:\ng h\n(cid:88)(cid:88)\nY = \u03b2TX + \u03b3 X Z +f(Z)+(cid:15).\njk j k\nj=1k=1\nDefine\n\uf8ee \uf8f9 \uf8ee \uf8f9\n\u03b2 \u03b3 \u00b7\u00b7\u00b7 \u03b3 X X Z \u00b7\u00b7\u00b7 X Z\n1 11 1h 1 1 1 1 h\n. . . . . . . .\n\u0398 = \uf8ef \uf8f0 . . . . . . . . \uf8fa \uf8fb , W = \uf8ef \uf8f0 . . . . . . . . \uf8fa \uf8fb = X Z(cid:101) T\n\u03b2 \u03b3 \u00b7\u00b7\u00b7 \u03b3 X X Z \u00b7\u00b7\u00b7 X Z\ng g1 gh g g 1 g h\nwhere Z(cid:101) T = (1,ZT). Then we can write\nY = \u03b8TW +f(Z)+(cid:15)\nwhere \u03b8 = vec(\u0398) and W = vec(W) = vec(XZ(cid:101) T) = Z(cid:101)\u2297X.\nLemma 4 We have\n(cid:40)"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_9_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 9,
+    "text": "d:101) T) = Z(cid:101)\u2297X.\nLemma 4 We have\n(cid:40) (cid:41)\u22121 (cid:34)\n(cid:18) (cid:19) (cid:18) (cid:19)\n(cid:35)\n\u03b8 = E[Z(cid:101)Z(cid:101) T \u2297(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))T] E Y \u2212\u00b5(Z) Z(cid:101)\u2297(X \u2212\u03bd(Z))\nand under this model, \u03c8 is equal to \u03c8 = \u03b8T\u2126\u03b8 where\n0 3\n(cid:18) 1 mT (cid:19)\n\u2126 = \u03a3\nX\n\u2297E[Z(cid:101)Z(cid:101) T] = \u03a3\nX\n\u2297\nm \u03a3 +m\nZ\nmT\n,\nZ Z Z Z\n9"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_10_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 10,
+    "text": "Verdinelli and Wasserman\nm = E[Z] and \u03a3 = Var[Z]. The efficient influence function for \u03c8 is\nZ Z 3\n\u03c6 = 2\u03b8T\u2126\u03c6 +\u03b8T\u02da\u2126\u03b8\u2212\u03c8 (8)\n\u03b8 3\nwhere\n(cid:110) (cid:111)\u22121\n\u03c6 = E[R RT ] R (R \u2212RT \u03b8),\n\u03b8 XZ XZ XZ Y XZ\nR\nY\n= Y \u2212\u00b5(Z), R\nXZ\n= vec[(X \u2212\u03bd(Z))Z(cid:101) T],\n(cid:40) (cid:41) (cid:40) (cid:41)\n(cid:20) 1 mT (cid:21) (cid:20) 0 (Z \u2212m )T (cid:21)\n\u02da\u2126 = [(X\u2212m )(X\u2212m )T \u2212\u03a3 ]\u2297 Z + \u03a3 \u2297 Z ,\nX X X m \u0393 X Z \u2212m \u02da\u0393\nZ Z\n(the influence function of \u2126) \u0393 = \u03a3 +m mT, and\nZ Z Z\n\u02da\u0393 = (Z \u2212m )(Z \u2212m )T \u2212\u03a3 +m (Z \u2212m )T +(Z \u2212m )mT\nZ Z Z"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_10_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 10,
+    "text": " = (Z \u2212m )(Z \u2212m )T \u2212\u03a3 +m (Z \u2212m )T +(Z \u2212m )mT\nZ Z Z Z Z Z Z\n(the influence function of \u0393).\n(cid:82)\nThen \u03c8 (u,\u03b8,\u2126) = \u03c8 (u,\u03b8,\u2126)+ \u03c6(u,\u03b8,\u2126)dP(u)+R where the remainder R satisfies\n3 3\nR = O(||\u03b8(P)\u2212\u03b8(P)||2)+O(||vec(\u2126(P))\u2212vec(\u2126(P))||2)\n+O(||\u03b8(P)\u2212\u03b8(P)||\u00d7||vec(\u2126(P))\u2212vec(\u2126(P))||).\n\u221a\nThus if ||\u03b8(P)\u2212\u03b8(P)|| = o(n\u22121/4) and ||vec(\u2126(P))\u2212vec(\u2126(P))|| = o(n\u22121/4) then nR =\no(1). Again, we have the double robustness property.\nThe sample estimate of \u03b8 is \u03b8(cid:98) = (RT\nXZ\nR\nXZ\n)\u22121RT\nXZ\nR\nY\nwhere the ith row of R\nXZ\n"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_10_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 10,
+    "text": "RT\nXZ\nR\nXZ\n)\u22121RT\nXZ\nR\nY\nwhere the ith row of R\nXZ\nis\nvec[(X\ni\n\u2212 \u03bd\n(cid:98)\n(Z\ni\n))Z(cid:101)\ni\nT] and R\nY\n(i) = Y\ni\n\u2212 \u00b5\n(cid:98)\n(Z\ni\n). Let \u2126(cid:98) be the sample version of \u2126. The\none-step estimator is\n1 (cid:88) 2 (cid:88)\n\u03c8(cid:98)3 = \u03b8(cid:98) T\u03c6(cid:98)\u2126 (U\ni\n)\u03b8(cid:98)+ \u03b8(cid:98) T\u2126(cid:98)\u03c6\n\u03b8\n(U\ni\n)\nn n\ni i\nwhere the sums are over D .\n1\n3.6 Confidence Intervals\nNow we describe the construction of the confidence intervals using a method we refer to as\nt-Cross. Let \u03c8 denote a generic para"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_10_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 10,
+    "text": "e refer to as\nt-Cross. Let \u03c8 denote a generic parameter. We combine two ideas: cross-fitting (Newey\nand Robins, 2018) and t-inference (Ibragimov and Mu\u00a8ller, 2010). Here are the steps:\n1. Divide the data into B disjoint sets D ,...,D ; we take B = 5 in the examples.\n1 B\n2. Estimate the nuisance functions using all the data except D\nj\nand compute \u03c8(cid:98)j on D\nj\n.\nHere, \u03c8(cid:98)j is the estimate of \u03c8 using the data in D\nj\n.\n3. Let \u03c8 =\nB\u22121(cid:80)B\nj=1\n\u03c8(cid:98)j . When \u03c8 (cid:54)= 0, each \u03c8(ci"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_10_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 10,
+    "text": "0)B\nj=1\n\u03c8(cid:98)j . When \u03c8 (cid:54)= 0, each \u03c8(cid:98)j is asymptotically Normal so that \u03c8 is\nasymptotically t .\nB\u22121\n10"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_11_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 11,
+    "text": "Variable Importance\n4. The confidence interval is\n\u03c8\u00b1t se\nB\u22121,\u03b1/2\nwhere se2 = (s2/B+c2/n) where s2 = (B\u22121)\u22121(cid:80)B\nj=1\n(\u03c8(cid:98)j \u2212\u03c8)2.\nThe t-method loses some efficiency because it divides the data into groups. The rate of\nconvergence does not change but the interval could be slightly larger. But the advantage is\nthat s2 is an unbiased estimate of the variance of \u03c8(cid:98)which does not depend on the accuracy\nof the estimated influence function. So we are trading efficiency for robustness.\nR"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_11_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 11,
+    "text": "on. So we are trading efficiency for robustness.\nRemark: Nonparametric and semiparametric confidence intervals require fairly strict\nassumptions. For example, we need to assume fast rates for the nuisance functions. An\nalternative is to use variability intervals which are centered at the mean of the estimator\nrather than at the true value. This might be less informative but requires much weaker\nassumptions.\n4 Simulations\nIn this section, we compare the behavior of the different parameters in som"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_11_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 11,
+    "text": "re the behavior of the different parameters in some synthetic\nexamples. For each example, we estimate all the parameters \u03c8 ,\u03c8 ,\u03c8 ,\u03c8 ,\u03c8 . To estimate\nL 0 1 2 3\nthe parameters we need to estimate the nuisance functions \u00b5(z) and \u03bd(z). As mentioned\nabove, we consider three approaches to estimating these functions: linear models, additive\nmodels and random forests. For the additive models we use the R package mgcv. For\nrandom forests we use the R package grf. We always use the default settings making"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_11_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 11,
+    "text": "age grf. We always use the default settings making no\nattempt to tune the methods to achieve good coverage.\nExample 1. We start with a very simple scenario where Y = 2X + (cid:15), (cid:15) \u223c N(0,1),\nZ = \u03b4X +\u03be, \u03be \u223c N(0,1), and (Z ,...,Z ) \u223c N(0,I). Figure 2 shows the coverage as a\n1 2 5\nfunction of the correlation between X and Z . As expected, \u03c8 has poor coverage as the\n1 L\ncorrelation increases. The parameter \u03c8 partially corrects the correlation distortion while\n0\nthe other parameters do a muc"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_11_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 11,
+    "text": "n distortion while\n0\nthe other parameters do a much better job. The coverage for \u03c8 decreases as correlation\n1\nincreases. However, when the correlation is large enough, it becomes easier to identify\ncorrelated variables and then the coverage increases. The true values of the parameters are\nplotted in Figure 1.\nExamples 2-5. Now we consider four multivariate examples. In each case, n = 10,000,\nh = 5 and (cid:15) \u223c N(0,1). The distributions are defined as follows:\nExample 2: X is standard Normal, Z"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_11_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 11,
+    "text": "ned as follows:\nExample 2: X is standard Normal, Z = X +N(0,.42), (Z ,...,Z ) is standard multi-\n1 2 h\nvariate Normal. The regression function is Y = 2X3+(cid:15). Hence Cor(X ,Z) = .93.\n1\nExample 3: Here, Z \u223c N(0,I), X = 2Z +(cid:15) , X = 2Z +(cid:15) , Y = 2X X +(cid:15) where\n1 1 1 2 2 2 1 2\n(cid:15),(cid:15) ,(cid:15) \u223c N(0,1). Hence Cor(X ,Z ) = Cor(X ,Z ) = .89.\n1 2 1 1 2 2\nExample 4: LetX \u223c Unif(\u22121,1),Z \u223c Unif(\u22121,1),andY = X2(X+(7/5))+(25/9)Z2+\n(cid:15). This example is from Williamson e"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_11_6",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 11,
+    "text": "/9)Z2+\n(cid:15). This example is from Williamson et al. (2021). Our coverage for \u03c8 is similar but\nL\nslightlylessthanthatinWilliamsonetal.(2021)butweareusingadifferentnonparametric\nestimator. In this case, X and Z are uncorrelated.\nExample 5: X \u223c N(0,1), Z = X +N(0,.42) (Z ,...,Z ) \u223c N(0,I) and Y = 2X2 +\n1 2 d\nXZ +(cid:15). In this case Cor(X,Z ) = .93\n1 1\n11"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_12_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 12,
+    "text": "Verdinelli and Wasserman\n0.0 0.2 0.4 0.6 0.8 1.0\n4\n3\n2\n1\n0\nr\ny\nFigure 1: This plot shows the true values of the parameters in Example 1 as a function of\nthe correlation \u03c1 between X and Z. The top red line is \u03c8 = \u03c8 = \u03c8 . The green\n0 2 3\nlineis\u03c8 . Thebluelineis\u03c8 whichequals\u03c8 for\u03c1 < .5andequals\u03c8 for\u03c1 > .5.\nL 1 L 0\nIn examples 2,4 and 5, we replaced X with orthogonal polynomials b (X),b (X),b (X).\n1 2 3\nThe results from 100 simulations are summarized in Figures 2 and 3 and in Table 2.\nThe standard e"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_12_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 12,
+    "text": " in Figures 2 and 3 and in Table 2.\nThe standard error of the coverage is 0.03. Figure 2 shows how often the confidence interval\ncontains the target parameter \u03c8 as a function of the correlation which varies from 0 to 1.\n0\nIn other words, we treat \u03c8 = \u03b22 = 4 as the truth and we evaluate how well an interval\n0\nbased on estimating \u03c8 covers \u03c8 . They all cover well except \u03c8 and \u03c8 . This is to be\nj 0 L 1\nexpected as \u03c8 = \u03c8 = \u03c8 in this example. However, \u03c8 decreases as a function of the\n0 2 3 L\ncorrelati"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_12_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 12,
+    "text": "\u03c8 decreases as a function of the\n0 2 3 L\ncorrelation. Infact,weevaluatedhowoftentheintervalfor\u03c8 containsthetruevalueof\u03c8 .\nL L\nItturnsoutthatthecoverageoftheintervalbasedon\u03c8 doescover\u03c8 atthenominallevel\nL L\n(although,aswithmanyexamples,theforestbasedmethodtendstosometimesundercover).\nThe coverage for \u03c8 goes down and then up because Z , which is correlated with X, gets\n1 1\nremoved when the correlation is large enough. Essentially, when the correlation is less than\n.5, \u03c8 = \u03c8 but after that, Z is re"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_12_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 12,
+    "text": "ion is less than\n.5, \u03c8 = \u03c8 but after that, Z is removed and \u03c8 = \u03c8 . This shows the inherent instability\n1 L 1 1 0\nof trying to remove correlated variables.\nFigure3showstheaverageoftheleftandrightendpointsoftheconfidenceintervals. The\nvertical line marks our target which is \u03c8 . The first thing to notice is that no method does\n0\nuniformly well. Inferences for \u03c8 are mostly pretty good, but the others are not and this is\n3\nto be expected. The coverage of \u03c8 is poor because it is not targeting the rig"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_12_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 12,
+    "text": "e of \u03c8 is poor because it is not targeting the right parameters.\nL\nSimilarly for \u03c8 . The poor coverage of \u03c8 in some cases is due to the difficulty of estimating\n1 0\nthe parameter nonparametrically. \u03c8 does not include interactions and does poorly when\n2\nthere are interactions. The random forest method has a tendency to undercover. However,\nwhat is not shown here, is that each method does cover its own target at the nominal level.\nEstimating variable importance well is surprisingly difficult. Gene"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_12_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 12,
+    "text": "le importance well is surprisingly difficult. Generally, we find that \u03c8\n3\nworks best. However, it does poorly in two cases: in Example 5, with linear regressions,\nand in Example 2 using random forests. \u03c8 rarely does well. Apparently, the functional is\n0\n12"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_13_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 13,
+    "text": "Variable Importance\n0.1\n8.0\n6.0\n4.0\n2.0\n0.0\nCorrelation\negarevoC\ny\nL\ny 0\ny\n1\ny 2\ny\n3\n0.1\n8.0\n6.0\n4.0\n2.0\n0.0\nCorrelation\negarevoC\ny\nL\ny 0\ny\n1\ny 2\ny\n3\n0.1\n8.0\n6.0\n4.0\n2.0\n0.0\nCorrelation\negarevoC\ny\nL\ny 0\ny\n1\ny 2\ny\n3\nFigure 2: Example 1: Coverage as a function of correlation. Top: linear. Middle: additive.\nBottom: forests.\ntoo difficult to estimate nonparametrically. \u03c8 works well in a few cases, but is not reliable\n1\nenough in general. Similar behavior occurs for \u03c8 . Except for a few cases, \u03c8 neve"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_13_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 13,
+    "text": "vior occurs for \u03c8 . Except for a few cases, \u03c8 never does\n2 L\nwell. This is not unexpected due to the correlation distortion.\nHowever,itshouldbenotedthatthesemethodsarealldoingwellinthesenseofcovering\nthe value of \u03c8 in the projected model at the nominal level. For example, when using linear\nmodels for \u00b5 and \u03bd, we are really estimating the value of \u03c8 for the projection of the\ndistribution onto the space of linear models. The parameter estimate may capture useful\ninformation even if it is not estim"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_13_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 13,
+    "text": "capture useful\ninformation even if it is not estimating \u03c8 .\n0\n13"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_14_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 14,
+    "text": "Verdinelli and Wasserman\nl ll l ll l ll ll l\nlll l ll ll l ll l\nll l l ll l l ll ll\nl ll l l l l l l l l\nll ll l l l l llll\n0 1 2 3 4 5 0 1 2 3 4 5 6\ny\nl ll lll ll ll l l 3\ny\nl ll lll ll ll l l 2\ny\nll ll\nl l\nll\nl\nlll 1\nl ll l l ll l l l y 0\nll ll l l llll l l y L\n1.0 1.2 1.4 1.6 1.8 2.0 0 1 2 3 4\nFigure 3: The average of the left and right endpoints of the confidence intervals over 100\nsimulations for Examples 2,3,4,5. The vertical line is \u03c8 . The plot shows how the\n0\nconfidence intervals of eac"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_14_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 14,
+    "text": "e plot shows how the\n0\nconfidence intervals of each parameter compare to the true value of \u03c8 . Top left\n0\nis Example 2. Top right is Example 3. Bottom left is Example 4. Bottom middle\nis Example 5. The bottom right shows the legend for all the plots. In each panel,\nthe groups of three line segments correspond to the three different models: the top\nis based on linear models, the middle is based on additive models and the bottom\nis based on random forests.\n5 Other Issues\nIn this section we discuss"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_14_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 14,
+    "text": "forests.\n5 Other Issues\nIn this section we discuss two further topics: other variable importance parameters, and\nShapley values.\n14"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_15_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 15,
+    "text": "Variable Importance\nLinear Additive Forest\n\u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8 \u03c8\nL 0 1 2 3 L 0 1 2 3 L 0 1 2 3\nExample 2 1 0.84 1 1 1.00 0.00 0.79 1.00 1.00 0.97 0.00 0.75 1.00 0.99 0.30\nExample 3 0 0.00 0 0 0.99 0.00 0.88 0.00 0.00 0.92 0.00 0.00 0.00 0.00 0.91\nExample 4 1 0.87 1 1 1.00 0.98 0.20 0.98 0.98 0.98 0.00 0.21 0.00 0.86 0.85\nExample 5 0 0.01 0 0 0.00 0.00 0.83 0.00 0.00 0.85 0.00 0.05 0.00 0.00 1.00\nTable 2: Coverage results for Examples 2,3,4 and 5. The standard error on the estimates\ncover"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_15_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 15,
+    "text": "4 and 5. The standard error on the estimates\ncoverage is 0.03. Overall, \u03c8 performs best in these examples. But when linear\n3\nregressions are used, \u03c8 fails. For random forests, \u03c8 does poorly in Example 2.\n3 3\nThe most robust behavior is given by the additive model.\n5.1 Other Parameters\nWe have focused on LOCO in this paper but there are many other variable importance\nparameters all of which can be estimated in a manner similar to the methods in this paper.\nSamarov (1993) suggested \u03c8 = (cid:82) (\u2202"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_15_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 15,
+    "text": "is paper.\nSamarov (1993) suggested \u03c8 = (cid:82) (\u2202\u00b5(x,z)/\u2202x)T(\u2202\u00b5(x,z)/\u2202x)dP. This parameter is not\nsubject to correlation distortion. Estimating derivatives can be difficult but in the semi-\nparametric case, \u03c8 takes a simple form. In the partially linear model we have \u03c8 = ||\u03b2||2\nand in the partially linear model with interactions (5) we have\n\u03c8 = ||\u03b2||2+2\u03b2GTm +GT\u03a3 G\nZ Z\nwhere G = \u03b3 .\njk jk\nAnother parameter is inspired by causal inference. If we viewed X as a treatment and\nZ as confounding variab"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_15_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 15,
+    "text": "iewed X as a treatment and\nZ as confounding variables, then (under some conditions) the causal effect, that is the\n(cid:82)\nmean of Y had X been set to x, is given by Robins\u2019 g-formula g(x) = \u00b5(x,z)dP(z).\nWe could then define \u03c8 as the variance Var[g(X)] or the average squared derivative of\n(cid:82) (\u2202g(x)/\u2202x)T(\u2202g(x)/\u2202x)dP. These parameters do not suffer from correlation distortion.\nNow Var[g(X)] equals \u03b2T\u03a3 \u03b2 under the partially linear model and is (\u03b2+\u0393m )T\u03a3 (\u03b2+\nX Z X\n\u0393m ) under the partially lin"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_15_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 15,
+    "text": "s (\u03b2+\u0393m )T\u03a3 (\u03b2+\nX Z X\n\u0393m ) under the partially linear model with interactions. Using the derivative, in the\nZ\npartially linear model we get \u03c8 = ||\u03b2||2 and in partially linear model with interactions we\nget\n\u03c8 = ||\u03b2||2+2\u03b2\u0393Tm +\u0393Tm mT\u0393.\nZ Z Z\nThe nonparametric partial correlation is defined by\nE[(Y \u2212\u00b5(Z))(X \u2212\u03bd(Z))]\n\u03c1 = .\n(cid:112)E(Y \u2212\u00b5(Z))2E(X \u2212\u03bd(Z))2\nUnder p we get a decorrelated version\n0\nE [(Y \u2212\u00b5 (Z))(X \u2212\u03bd (Z))] (cid:82) (cid:82) (\u00b5(x,z)\u2212\u00b5 (z))(x\u2212m )p(x)p(z)dxdz\n0 0 0 0 X\n\u03c1 = = .\n0 (cid:112)E 0 "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_15_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 15,
+    "text": "\u2212m )p(x)p(z)dxdz\n0 0 0 0 X\n\u03c1 = = .\n0 (cid:112)E 0 (Y \u2212\u00b5 0 (Z))2E 0 (X \u2212\u03bd 0 (Z))2 \u03c3 (cid:113) (cid:82) (cid:82) (cid:82) (y\u2212\u00b5 (z))2p(y|x,z)p(x)p(z)\nX 0\nMore detail about \u03c1 are in the appendix.\n0\n15"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_16_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 16,
+    "text": "Verdinelli and Wasserman\n5.2 Shapley Values\nAmethodfordefiningvariableimportancethathasattractedmuchattentionlatelyisbased\non Shapley values (Messalas et al., 2019; Aas et al., 2019; Lundberg and Lee, 2016; Covert\net al., 2020; Fryer et al., 2020; Covert and Lee, 2020; Israeli, 2007; Mase et al., 2019; B\u00b4enard\net al., 2021). This is an idea from game theory where the goal is to define the importance of\neach player in a cooperative game. While Shapley values can be useful in some settings, for\nex"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_16_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 16,
+    "text": "pley values can be useful in some settings, for\nexample, computerexperiments(OwenandPrieur,2017)weargueherethatShapleyvalues\ndo not solve the decorrelation issue and LOCO or decorrelated LOCO may be preferable\nfor routine regression problems. However, this is an active area of research and the issue is\nfar from settled. Shapley values may indeed have some other advantages.\nThe Shapley value is defined as follows. Suppose we have covariates (Z ,...,Z ) and\n1 d\nthat we want to measure the importan"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_16_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 16,
+    "text": ".,Z ) and\n1 d\nthat we want to measure the importance of Z . For any subset S \u2282 {1,...,d} let Z =\nj S\n(Z : j \u2208 S) and let \u00b5(S) = E[Y|Z ]. The Shapley value for Z is\nj S j\n1 (cid:88)\ns = [V(S+(\u03c0))\u2212V(S (\u03c0))]\nj d! j j\n\u03c0\nwhere the sum is over of permutations of (Z ,...,Z ), S (\u03c0) denotes all variables before Z\n1 d j j\nin permutation \u03c0, S+(\u03c0) = {S (\u03c0) (cid:83) {j}} and V(S) is some measure of fit the regression\nj j\nmodel with variables S. If V(S) = \u2212E[(Y \u2212\u00b5(S))2], then\n1 (cid:88)\ns = E[(\u00b5(S )\u2212\u00b5(S+))2]"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_16_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 16,
+    "text": "(Y \u2212\u00b5(S))2], then\n1 (cid:88)\ns = E[(\u00b5(S )\u2212\u00b5(S+))2].\nj d! j j\n\u03c0\nThis is just the LOCO parameter averaged over all possible submodels. The Shapley value\nfor a group of variables can be defined similarly.\nIt is clear that this parameter is difficult to compute and inference, while possible\n(Williamson and Feng, 2020) is very challenging. The appeal of the Shapley value is that\nit has the following nice properties:\n(A1): (cid:80) s = E[(Y \u2212\u00b5(Z))2].\nj j\n(A2) If E[(Y \u2212\u00b5(S (cid:83) {i}))2] = E[(Y \u2212\u00b5(S "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_16_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 16,
+    "text": " j\n(A2) If E[(Y \u2212\u00b5(S (cid:83) {i}))2] = E[(Y \u2212\u00b5(S (cid:83) {j}))2] for every S not containing i or j,\nthen s = s .\ni j\n(A3)Ifwetreat{Z ,Z }asonevariable,thenitsShapleyvalues satisfiess = s +s .\nj k jk jk j k\n(A4) If E[(Y \u2212\u00b5(S (cid:83) {j}))2] = E[(Y \u2212\u00b5(S))2] for all S then s = 0.\nj\nHowever,weseetwoproblemswithShapleyvaluesappliedtoregression. First,itdefines\nvariable importance with respect to all submodels. But most of those submodels are not\nof interest. Indeed, most of them would be a bad fit"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_16_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 16,
+    "text": " interest. Indeed, most of them would be a bad fit to the data and are not relevant.\nSo it is not clear why we should involve them in any definition of variable importance or\nin the axioms. (An intriguing idea might be to weight the submodels according to their\npredictive value). Second, they succumb to correlation distortion. To see this, suppose that\nY = \u03b2Z +(cid:15), that the Z \u2019s have variance 1 and that they are perfectly correlated, that is,\n1 j\nP(Z = Z ) = 1 for every j and k. The Shapley"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_16_6",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 16,
+    "text": ",\n1 j\nP(Z = Z ) = 1 for every j and k. The Shapley value for Z turns out to be s = \u03b22/d\nj k 1 1\nwhich is close to 0 when d is large. In contrast, \u03c8 = \u03b22, which seems more a appropriate.\n0\n16"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_17_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 17,
+    "text": "Variable Importance\nThe confidence interval for \u03c8 would have infinite length since the design is singular which\n0\nalso seems appropriate, since estimating the importance of a single variable among a set of\nperfectly correlated variables should be an impossible inferential task. For these reasons,\nwe feel that decorrelated LOCO may have some advantages over Shapley values.\n6 Conclusion\nWe showed that correlation distortion can be removed from LOCO by modifying the defini-\ntionappropriately. Thisl"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_17_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 17,
+    "text": " by modifying the defini-\ntionappropriately. Thisleadstotheparameter\u03c8 . Aswehaveseen,gettingvalidinferences\n0\nfor \u03c8 nonparametrically is difficult even in fairly simple examples. This is mainly because\n0\n(cid:82)\nthe parameter involves the function \u00b5 (z) = \u00b5(x,z)p(x)dx which requires estimating\n0\n\u00b5(x,z) in regions where there is little data due to the dependence between x and z. The\neasiest remedy is to remove correlated variables as we did for \u03c8 but this led to disappoint-\n1\ning behavior. The o"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_17_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 17,
+    "text": " but this led to disappoint-\n1\ning behavior. The other remedy was to use a semiparametric model for \u00b5(x,z) which led\nto \u03c8 and \u03c8 . This appears to be the best approach. We emphasize that even when the\n2 3\ncoverage for \u03c8 and \u03c8 is low, (when the semiparametric model is misspecified), these pa-\n2 3\nrameters are still useful if we interpret them as projections. For example, \u03c8 measures the\n2\nvariable importance of X in the regression function of the form \u03b2x+f(z) that best approx-\nimates \u00b5(x,z). In the"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_17_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 17,
+    "text": "rm \u03b2x+f(z) that best approx-\nimates \u00b5(x,z). In the sense \u03c8 still captures part of the variable importance. Graham and\n2\nde Xavier Pinto (2021) discuss in detail the interpretation of misspecified semiparametric\nmodels.\nWe only dealt with low dimensional models. The methods extend to high dimensional\nmodels by using the usual sparsity based estimators for the nuisance functions \u00b5(z) and\n\u03bd(z). We plan to explore this in future work.\nFinally, we briefly discussed the role of Shapley values which ha"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_17_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 17,
+    "text": "efly discussed the role of Shapley values which have become popular in\nthe literature on variable importance. The motivation for using Shapley values appears to\nbe that they might alleviate correlation distortion. Indeed, if the variables were indepen-\ndent, Shapley values would probably not be considered. But we argued that they do not\nadequately address the problem. Instead, we believe that some form of decorrelation might\nbe preferred.\nAcknowledgments\nWe would like to acknowledge two referees"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_17_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 17,
+    "text": "edgments\nWe would like to acknowledge two referees, whose comments helped to improve the paper.\n7 Appendix\nIn this appendix we have proofs and details for a few other parameters.\n17"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_18_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 18,
+    "text": "Verdinelli and Wasserman\n7.1 Proofs\nTheorem 1. Let \u03c8 (\u00b5,p) = (cid:82) (cid:82) (\u00b5(x,z) \u2212 \u00b5 (z))2p(x)p(z)dxdz. The efficient influence\n0 0\nfunction is\n(cid:90) (cid:90)\n\u03c6(X,Y,Z,\u00b5,p) = (\u00b5(x,Z)\u2212\u00b5 (Z))2p(x)dx+ (\u00b5(X,z)\u2212\u00b5 (z))2p(z)dz\n0 0\np(X)p(Z)\n+ 2 (\u00b5(X,Z)\u2212\u00b5 (Z))(Y \u2212\u00b5(X,Z))\u22122\u03c8(p).\n0\np(X,Z)\nIn particular, we have the following von Mises expansion\n(cid:90) (cid:90)\n\u03c8 (\u00b5,p) = \u03c8 (\u00b5,p)+ \u03c6(x,y,z,\u00b5,p)dP(x,y,z)+R\n0 0\nwhere the remainder R satisfies\n||R|| = O(||p(x,z)\u2212p(x,z)||2)+O(||\u00b5(x,z)\u2212\u00b5(x,z)||2)\n+ O(||p"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_18_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 18,
+    "text": "(||p(x,z)\u2212p(x,z)||2)+O(||\u00b5(x,z)\u2212\u00b5(x,z)||2)\n+ O(||p(x,z)\u2212p(x,z)||\u00d7||\u00b5(x,z)\u2212\u00b5(x,z)||).\nProof. To show that \u03c6(X,Y,Z,\u00b5,p) is the efficient influence function we verify that\n\u03c6(X,Y,Z,\u00b5,p) is the Gateuax derivative of \u03c8 and that it has the claimed second order\nremainder. We will use the symbol (cid:48) to denote the Gateuax derivative defined by\n\u03c8 ((1\u2212(cid:15))P +(cid:15)\u03b4 )\u2212\u03c8 (P)\n0 XYZ 0\nlim\n(cid:15)\u21920 (cid:15)\nwhere\u03b4 isapointmassat(X,Y,Z). Also,let\u03b4 denoteapointmassatX,\u03b4 apoint\nXYZ X XY\nmass at (X,Y)"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_18_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 18,
+    "text": "enoteapointmassatX,\u03b4 apoint\nXYZ X XY\nmass at (X,Y) etc. Let w(x,z) = p(x)p(z). Then \u03c8 = (cid:82) (cid:82) (\u00b5(x,z)\u2212\u00b5 (z))2w(x,z)dxdz.\n0 0\nNow\n(cid:90) (cid:90) (cid:90) (cid:90)\n\u03c8(cid:48) = (\u00b5(x,z)\u2212\u00b5 (z))2w(cid:48)(x,z)dxdz+2 w(x,z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5(cid:48)(x,z)\u2212\u00b5(cid:48)(z))dxdz\n0 0 0\nFirst, note that w(cid:48)(x,z) = p(x)(\u03b4 (z)\u2212p(z))+p(z)(\u03b4 (x)\u2212p(x)). Next\nZ X\n(cid:90) (cid:90)\np(x,y,z)\n\u00b5(x,z) = yp(y|x,z)dy = y dy\np(x,z)\nand\n(cid:90)\np(x,y,z)+(cid:15)(\u03b4 \u2212p(x,y,z))\nXYZ\n\u00b5 (x,z) = y dy\n(cid:15)\np(x"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_18_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 18,
+    "text": "d:15)(\u03b4 \u2212p(x,y,z))\nXYZ\n\u00b5 (x,z) = y dy\n(cid:15)\np(x,z)+(cid:15)(\u03b4 \u2212p(x,z))\nXZ\nSo\n(cid:40) (cid:41)\n(cid:90)\np(x,z)(\u03b4 \u2212p(x,y,z))\u2212p(x,y,z)(\u03b4 \u2212p(x,z))\n\u00b5(cid:48)(x,z) = y XYZ XZ dy\np2(x,z)\nY \u00b5(x,z)I(x = X,z = Z)\n= I(x = X,z = Z)\u2212\u00b5(x,z)\u2212 +\u00b5(x,z)\np(X,Z) p(x,z)\n(Y \u2212\u00b5(x,z))\n= I(x = X,z = Z)\np(x,z)\n18"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_19_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 19,
+    "text": "Variable Importance\n(cid:82)\nNow \u00b5 (z) = \u00b5(x,z)p(x) dx so\n0\n(cid:90) (cid:90)\n\u00b5(cid:48)(z) = \u00b5(x,z)(\u03b4 (x)\u2212p(x))dx+ p(x)\u00b5(cid:48)(x,z)dx\n0 X\n(Y \u2212\u00b5(X,z))p(X)\n= \u00b5(X,z)\u2212\u00b5 (z)+ I(z = Z)\n0\np(X,z)\nso\n(cid:90) (cid:90)\n\u03c6(X,Y,Z,\u00b5,p) = (\u00b5(x,Z)\u2212\u00b5 (Z))2p(x)dx\u2212\u03c8+ (\u00b5(X,z)\u2212\u00b5 (z))2p(z)dz\u2212\u03c8\n0 0\n(Y \u2212\u00b5(X,Z))\n+ 2 w(X,Z)(\u00b5(X,Z)\u2212\u00b5 (Z))\n0\np(X,Z)\n(cid:90) (cid:90)\n\u2212 2 w(x,z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5(X,z)\u2212\u00b5 (z))dxdz\n0 0\n(cid:90)\n(Y \u2212\u00b5(X,Z))p(X)\n\u2212 2 w(x,Z)(\u00b5(x,Z)\u2212\u00b5 (Z))dx\n0\np(X,Z)\n(cid:90) (cid:90)\n= (\u00b5(x,Z)\u2212\u00b5 (Z))2p(x)dx+ (\u00b5(X,z"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_19_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 19,
+    "text": "\n(cid:90) (cid:90)\n= (\u00b5(x,Z)\u2212\u00b5 (Z))2p(x)dx+ (\u00b5(X,z)\u2212\u00b5 (z))2p(z)dz\u22122\u03c8\n0 0\n(Y \u2212\u00b5(X,Z))\n+ 2 w(X,Z)(\u00b5(X,Z)\u2212\u00b5 (Z))\n0\np(X,Z)\n(cid:90) (cid:90)\n\u2212 2 w(x,z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5(X,z)\u2212\u00b5 (z))dxdz\n0 0\n(cid:90)\n(Y \u2212\u00b5(X,Z))p(X)p(Z)\n\u2212 2 p(x)(\u00b5(x,Z)\u2212\u00b5 (Z))dx\n0\np(X,Z)\n(cid:90) (cid:90)\n= (\u00b5(x,Z)\u2212\u00b5 (Z))2p(x)dx+ (\u00b5(X,z)\u2212\u00b5 (z))2p(z)dz\n0 0\np(X)p(Z)\n+ 2 (\u00b5(X,Z)\u2212\u00b5 (Z))(Y \u2212\u00b5(X,Z))\u22122\u03c8(p)\n0\np(X,Z)\nwhich has the claimed form.\nNow we consider the von Mises remainder. The remainder at (p,\u00b5) in the direction of\n(p,\u00b5) is\n(cid:90)\n"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_19_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 19,
+    "text": "er at (p,\u00b5) in the direction of\n(p,\u00b5) is\n(cid:90)\nR = \u03c8(p,\u00b5)\u2212\u03c8(p,\u00b5)\u2212 \u03c6(u,\u00b5,p)dP(u).\nNow\n\u2212R = \u03c8(p,\u00b5)\u2212\u03c8(p,\u00b5)\n(cid:90) (cid:90) (cid:90) (cid:90)\n+ p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))2 dxdz+ p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))2 dxdz\n0 0\n(cid:90) (cid:90) (cid:90)\np(x)p(z)\n+ 2 p(x,y,z) (\u00b5(x,z)\u2212\u00b5 (z))(y\u2212\u00b5(x,z)) dxdydz\u22122\u03c8(p)\np(x,z) 0\n(cid:90) (cid:90) (cid:90) (cid:90)\n= p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))2 dxdz+ p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))2 dxdz\n0 0\n(cid:90) (cid:90) (cid:90)\np(x)p(z)\n+ 2 p(x,y,z) (\u00b5(x,z)\u2212\u00b5 (z))(y\u2212\u00b5(x,z)) dxdydz\u2212\u03c8(p,\u00b5)\u2212\u03c8(p,\u00b5)\n"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_19_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 19,
+    "text": ",z) (\u00b5(x,z)\u2212\u00b5 (z))(y\u2212\u00b5(x,z)) dxdydz\u2212\u03c8(p,\u00b5)\u2212\u03c8(p,\u00b5)\np(x,z) 0\n19"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_20_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 20,
+    "text": "Verdinelli and Wasserman\n(cid:90) (cid:90) (cid:90) (cid:90)\n= p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))2 dxdz+ p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))2 dxdz\n0 0\n(cid:90) (cid:90)\np(x)p(z)\n+ 2 p(x,z) (\u00b5(x,z)\u2212\u00b5 (z))(\u00b5(x,z)\u2212\u00b5(x,z)) dxdz\u2212\u03c8(p,\u00b5)\u2212\u03c8(p,\u00b5)\np(x,z) 0\n(cid:90) (cid:90) (cid:90) (cid:90)\n= p(x) p(z) (\u00b5(x,z)\u2212\u00b5 (z))2 dxdz+ p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))2 dxdz\n0 0\n(cid:90) (cid:90) (cid:90) (cid:90)\n\u2212 p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))2 dxdz\u2212 p(x)p(z)(\u00b5\u2212\u00b5 )2 dxdz+2S\n0 0\nwhere\n(cid:90) (cid:90)\nS = 2 (p(x,z)\u2212p(x,z))(\u00b5(x,z)\u2212\u00b5(x,z))p(x)p(z)(\u00b5(x,z)\u2212\u00b5 ("
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_20_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 20,
+    "text": " (p(x,z)\u2212p(x,z))(\u00b5(x,z)\u2212\u00b5(x,z))p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))dxdz.\n0\n(cid:82) (cid:82)\nNow consider the term m = p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5(x,z)\u2212\u00b5(x,z)) dxdz. We have\n0\n(cid:90) (cid:90)\nm = p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5(x,z)\u2212\u00b5(x,z)) dxdz\n0\n(cid:90) (cid:90)\n= p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5(x,z)\u2212\u00b5 (z)+\u00b5 (z)\u2212\u00b5 (z)+\u00b5 (z)\u2212\u00b5(x,z)) dxdz\n0 0 0 0 0\n(cid:90) (cid:90)\n= p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5(x,z)\u2212\u00b5 (z)) dxdz\n0 0\n(cid:90) (cid:90)\n+ p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5 (z)\u2212\u00b5 (z)) dxdz\n0 0 0\n(cid:90) (cid:90)\n+ p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_20_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 20,
+    "text": "0 0 0\n(cid:90) (cid:90)\n+ p(x)p(z)(\u00b5(x,z)\u2212\u00b5 (z))(\u00b5 (z)\u2212\u00b5(x,z)) dxdz\n0 0\n(cid:90) (cid:90) \u221a (cid:112) (cid:90) (cid:90)\n= p(x)p(z) \u03b4 \u03b4 dxdz+0\u2212 p(x)p(z)\u03b4 dxdz,\nwhere \u03b4 = \u00b5(x,z)\u2212\u00b5 (z) and \u03b4 = \u00b5(x,z)\u2212\u00b5 (z). Hence,\n0 0\n(cid:90) (cid:90) (cid:90) (cid:90) (cid:90) (cid:90) \u221a (cid:112)\n\u2212R = p(x)p(z)\u03b4 dxdz+ p(x)p(z)\u03b4 dxdz+2 p(x)p(z) \u03b4 \u03b4 dxdz\n(cid:90) (cid:90) (cid:90) (cid:90)\n\u2212 2 p(x)p(z)\u03b4 dxdz\u2212 p(x)p(z)\u03b4 dxdz\n(cid:90) (cid:90) (cid:90) (cid:90) (cid:90) (cid:90)\n\u2212 p(x)p(z)\u03b4 dxdz\u2212 p(x)p(z)\u03b4 dxdz+ p(x)"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_20_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 20,
+    "text": "0) (cid:90)\n\u2212 p(x)p(z)\u03b4 dxdz\u2212 p(x)p(z)\u03b4 dxdz+ p(x)p(z)\u03b4 dxdz\n(cid:90) (cid:90) (cid:90) (cid:90) (cid:90) (cid:90) (cid:112) \u221a\n= p(x)p(z)\u03b4 dxdz+ p(x)p(z)\u03b4 dxdz\u2212 p(x)p(z)( \u03b4\u2212 \u03b4)2 dxdz\n(cid:90) (cid:90) (cid:90) (cid:90) (cid:90) (cid:90)\n\u2212 2 p(x)p(z)\u03b4 dxdz\u2212 p(x)p(z)\u03b4 dxdz+ p(x)p(z)\u03b4 dxdz\n(cid:90) (cid:90) (cid:90) (cid:90)\n= (p(x)\u2212p(x))p(z)(\u03b4\u2212\u03b4) dxdz+ p(x)(p(z)\u2212p(z))(\u03b4\u2212\u03b4) dxdz\n(cid:90) (cid:90) (cid:90) (cid:90) (cid:112) \u221a\n+ (p(x)\u2212p(x))(p(z)\u2212p(z))\u03b4 dxdz\u2212 p(x)p(z)( \u03b4\u2212 \u03b4)2 dxdz.\nAnd hence\n||R|| = "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_20_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 20,
+    "text": ")\u03b4 dxdz\u2212 p(x)p(z)( \u03b4\u2212 \u03b4)2 dxdz.\nAnd hence\n||R|| = O(||p(x)\u2212p(x)|| ||\u03b4\u2212\u03b4||)+O(||p(z)\u2212p(z)|| ||\u03b4\u2212\u03b4||)\n20"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_21_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 21,
+    "text": "Variable Importance\n+ O(||p(x)\u2212p(x)|| ||p(z)\u2212p(z)||)+O(||\u03b4\u2212\u03b4||2)\n= O(||p(x,z)\u2212p(x,z)||2)+O(||\u00b5(x,z)\u2212\u00b5(x,z)||2)\n+ O(||p(x,z)\u2212p(x,z)||\u00d7||\u00b5(x,z)\u2212\u00b5(x,z)||). (cid:3)\nLemma 3. Suppose that ||\u00b5(x,v)\u2212\u00b5(x,v)|| = o (n\u22121/4). Then, when \u03c8 (cid:54)= 0, we have\n\u221a (cid:98) P 1\nthat n(\u03c8(cid:98)1 \u2212\u03c8\n1\n) (cid:32) N(0,\u03c42) for some \u03c42.\nProof We have\nY\ni\n\u2212\u00b5\n(cid:98)\n(V(cid:98)i ) = (Y\ni\n\u2212\u00b5(V\ni\n))+(\u00b5(V\ni\n)\u2212\u00b5(V(cid:98)i ))+(\u00b5(V(cid:98)i )\u2212\u00b5\n(cid:98)\n(V(cid:98)i ))\n= (Y\ni\n\u2212\u00b5(V\ni\n))\u2212(V(cid:98)i \u2212V\ni\n)T\u2207\u00b5(V(cid:101)i )+("
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_21_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 21,
+    "text": "\ni\n\u2212\u00b5(V\ni\n))\u2212(V(cid:98)i \u2212V\ni\n)T\u2207\u00b5(V(cid:101)i )+(\u00b5(V(cid:98)i )\u2212\u00b5\n(cid:98)\n(V(cid:98)i ))\nfor some V(cid:101)i between V\ni\nand V(cid:98)i . Squaring, summing and letting (cid:15)\ni\n= Y\ni\n\u2212\u00b5(V\ni\n),\n1 (cid:88) 1 (cid:88) 1 (cid:88) 1 (cid:88)\nn\n(Y\ni\n\u2212\u00b5\n(cid:98)\n(V(cid:98)i ))2 =\nn\n(cid:15)2\ni\n+\nn\n((V(cid:98)i \u2212V\ni\n)T\u2207\u00b5(V(cid:101)i ))2+\nn\n(\u00b5(V(cid:98)i )\u2212\u00b5\n(cid:98)\n(V(cid:98)i ))\ni i i i\n2 (cid:88) 2 (cid:88)\n+ (cid:15)\ni\n(V(cid:98)i \u2212V\ni\n)T\u2207\u00b5(V(cid:101)i )2+ (cid:15)\ni\n(\u00b5(V(cid:98)i )\u2212\u00b5\n(cid:98)\n"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_21_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 21,
+    "text": "d:101)i )2+ (cid:15)\ni\n(\u00b5(V(cid:98)i )\u2212\u00b5\n(cid:98)\n(V(cid:98)i ))\nn n\ni i\n2\n+ (V(cid:98)i \u2212V\ni\n)T\u2207\u00b5(V(cid:101)i )(\u00b5(V(cid:98)i )\u2212\u00b5\n(cid:98)\n(V(cid:98)i ))\nn\n1 (cid:88) 2 (cid:88) 2 (cid:88)\n=\nn\n(cid:15)2\ni\n+\nn\n(cid:15)\ni\n(V(cid:98)i \u2212V\ni\n)T\u2207\u00b5(V(cid:101)i )+\nn\n(cid:15)\ni\n(\u00b5(V(cid:98)i )\u2212\u00b5\n(cid:98)\n(V(cid:98)i ))+R\nn\ni i i\nwhere R\nn\n= O(||\u03b4(cid:98)\u2212\u03b4||2)+O(||\u00b5\n(cid:98)\n\u2212\u00b5||2)+O(||\u03b4(cid:98)\u2212\u03b4|| ||\u00b5\n(cid:98)\n\u2212\u00b5||2) = o\nP\n(n\u22121/2). The mean of\nthe first three terms is E[(Y \u2212\u00b5(V))2]. By a similar argume"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_21_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 21,
+    "text": " three terms is E[(Y \u2212\u00b5(V))2]. By a similar argument,\n1 (cid:88) 1 (cid:88) 2 (cid:88)\nn\n(Y\ni\n\u2212\u00b5\n(cid:98)\n(X\ni\n,V(cid:98)i ))2 =\nn (cid:101)\n(cid:15)2\ni\n+\nn (cid:101)\n(cid:15)\ni\n(V(cid:98)i \u2212V\ni\n)T\u2207\u00b5(X\ni\n,V(cid:101)i )\ni i i\n2 (cid:88)\n+\n(cid:101)\n(cid:15)\ni\n(\u00b5(X\ni\n,V(cid:98)i )\u2212\u00b5\n(cid:98)\n(X\ni\n,V(cid:98)i ))+R(cid:101)n\nn\ni\nwhere\n(cid:101)\n(cid:15)\ni\n= Y\ni\n\u2212\u00b5(X\ni\n,V\ni\n),R(cid:101)n = O(||\u03b4(cid:98)\u2212\u03b4||2)+O(||\u00b5\n(cid:98)\n\u2212\u00b5||2)+O(||\u03b4(cid:98)\u2212\u03b4||||\u00b5\n(cid:98)\n\u2212\u00b5||2) = o\nP\n(n\u22121/2)\nand the mean of the"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_21_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 21,
+    "text": "\n(cid:98)\n\u2212\u00b5||2) = o\nP\n(n\u22121/2)\nand the mean of the first three terms is E[(Y \u2212\u00b5(X,V))2]. The result follows from the CLT\n\u221a\nand the fact that n(R\nn\n+R(cid:101)n ) = o\nP\n(1).\nLemma 4. We have that \u03c8 under the partially linear model with interactions, is equal\n0\nto \u03c8 = \u03b8T\u2126\u03b8 where\n3\n(cid:18) 1 mT (cid:19)\n\u2126 = \u03a3 \u2297 Z .\nX m \u03a3\nZ Z\nProof. Let us write\nh\n(cid:88)\n\u00b5(x,z) = \u03b8TW \u2261 \u03b8TX + \u03b8TXZ\n0 j j\nj=1\n21"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_22_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 22,
+    "text": "Verdinelli and Wasserman\nwhere we have written \u03b8 = (\u03b8 ,\u03b8 ,...,\u03b8 ) and so \u00b5 (z) = \u03b8Tm + (cid:80)h \u03b8Tm Z . Thus\n0 1 h 0 0 X j=1 j X j\nh\n(cid:88)\n(\u00b5(x,z)\u2212\u00b5 (z))2 = \u03b8T(X \u2212m )(X \u2212m )T\u03b8 + \u03b8T(X \u2212m )(X \u2212m )TZ2\u03b8\n0 0 X X 0 j X X j j\nj=1\nh\n(cid:88) (cid:88)\n+ 2 \u03b8T(X \u2212m )(X \u2212m )TZ \u03b8 +2 \u03b8T(X \u2212m )(X \u2212m )TZ Z \u03b8\n0 X X j j j X X j k k\nj=1 j(cid:54)=k\nand so\nh\n(cid:88)\nE [(\u00b5(x,z)\u2212\u00b5 (z))2] = \u03b8T\u03a3 \u03b8 + \u03b8T\u03a3 (\u03a3 (j,j)+m2(j))\u03b8\n0 0 X 0 j X Z Z j\nj=1\nh\n(cid:88) (cid:88)\n+ 2 \u03b8T\u03a3 m (j)\u03b8 +2 \u03b8T\u03b8 (\u03a3 (j,k)+m (j) m (k))\n0 X Z j j"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_22_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 22,
+    "text": " \u03b8T\u03a3 m (j)\u03b8 +2 \u03b8T\u03b8 (\u03a3 (j,k)+m (j) m (k))\n0 X Z j j k Z Z Z\nj=1 j(cid:54)=k\n= \u03b8T\u2126 \u03b8. (cid:3)\n7.2 \u03c8 Under the Semiparametric Model\nL\nHere we give the form that \u03c8 takes under the semiparametric model. Under the model\nL\n\u00b5(x,z) = f(z)+xT\u03b2(z), we have \u03c8 = E[\u03b2T(Z)(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))T\u03b2(Z)] which has\nL\nefficient influence function\n\u03c6 = 2\u03b2(Z)T(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))TV\u22121(Z)XY\n\u2212 2\u03b2(Z)T(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))TV\u22121(Z)(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))T\u03b2\n\u2212 \u03b2T(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))T\u03b2 \u2212\u03c8 .\nL\nWhen \u00b5(x,z) = \u03b2Tx+ (cid:80) \u03b3 x z +f(z) then\njk jk j "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_22_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 22,
+    "text": "n \u00b5(x,z) = \u03b2Tx+ (cid:80) \u03b3 x z +f(z) then\njk jk j k\n\u03c8 = \u03b8T(\u2126 +\u2126 +\u2126 +\u2126 )\nL 11 12 21 22\nwhere\n(cid:18) 1 mT (cid:19)\n\u2126 = Z \u2297\u03a3 ,\n11 m \u03a3 +m mT X\nZ Z Z Z\n(cid:18) 1 mT (cid:19)\n\u2126 = Z \u2297E[(X \u2212m )(m \u2212\u03bd(Z))T],\n12 m \u03a3 +m mT X X\nZ Z Z Z\n(cid:18) 1 mT (cid:19)\n\u2126 = Z \u2297E[(X \u2212m )(m \u2212\u03bd(Z))T],\n21 m \u03a3 +m mT X X\nZ Z Z Z\n(cid:18) 1 mT (cid:19)\n\u2126 = Z \u2297E[(m \u2212\u03bd(Z))(X \u2212m )T],\n12 m \u03a3 +m mT X X\nZ Z Z Z\n(cid:18) 1 mT (cid:19)\n\u2126 = Z \u2297E[(m \u2212\u03bd(Z))(m \u2212\u03bd(Z))T].\n22 m \u03a3 +m mT X X\nZ Z Z Z\nWe omit the expression for influence func"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_22_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 22,
+    "text": "\nZ Z Z Z\nWe omit the expression for influence function.\n22"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_23_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 23,
+    "text": "Variable Importance\n7.3 Partial Correlation\nIn this section, we give the decorrelated version of the partial correlation. Recall that\nE [(Y \u2212\u00b5 (Z))(X \u2212\u03bd (Z))] (cid:82) (cid:82) (\u00b5(x,z)\u2212\u00b5 (z))(x\u2212m )p(x)p(z)dxdz\n0 0 0 0 X\n\u03c1 = = .\n0 (cid:112)E 0 (Y \u2212\u00b5 0 (Z))2E 0 (X \u2212\u03bd 0 (Z))2 \u03c3 (cid:113) (cid:82) (cid:82) (cid:82) (y\u2212\u00b5\u2217(z))2p(y|x,z)p(x)p(z)\nX\nTheorem 5 The efficient influence function for \u03c1 is\n0\n(cid:40) (cid:41)\n1 \u03c8 \u03c8\n1 2\n\u03c6 = \u221a \u03c6 \u2212 \u03c6 \u2212 \u03c6\n1 2 3\n\u03c6 \u03c6 2\u03c8 2\u03c8\n2 3 2 3\nwhere, in this section, we define\n(c"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_23_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 23,
+    "text": "2\u03c8 2\u03c8\n2 3 2 3\nwhere, in this section, we define\n(cid:90) (cid:90)\n\u03c8 = (\u00b5(x,z)\u2212\u00b5 (z))(x\u2212m )p(x)p(z)dxdz\n1 0 X\n\u03c8 = \u03c32\n2 X\n(cid:90) (cid:90) (cid:90)\n\u03c8 = (y\u2212\u00b5 (z))2p(y|x,z)p(x)p(z)dxdzdy\n3 0\nand\nY \u2212\u00b5(X,Z)\n\u03c6 = \u00b5 (X)(X \u2212m)+(X \u2212m) p(X)p(Z)+(X \u2212m)p(X)\u00b5(X,Z)\u2212\u00b5 (z)\u22122\u03c8\n1 0 0 1\np(X,Z)\n\u03c6 = (X \u2212m)2\u2212\u03c32\n2 X\np(X)p(Z)\n\u03c6 = (Y \u2212v(Z))2\u2212\u03c8 \u22122 (Y \u2212\u00b5(X,Z)).\n3 3\np(X,Z)\n\u221a\nProof Let us write \u03c1 = f(\u03c8 ,\u03c8 ,\u03c8 ) where f(a,b,c) = a/ bc and\n0 1 2 3\n\u03c8 = E [(Y \u2212\u00b5 (Z))(X \u2212\u03bd (Z))]\n1 0 0 0\n\u03c8 = \u03c32\n2 X\n(cid:90) (cid:90) (cid:90)\n\u03c8 = (y"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_23_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 23,
+    "text": "0 0 0\n\u03c8 = \u03c32\n2 X\n(cid:90) (cid:90) (cid:90)\n\u03c8 = (y\u2212\u00b5\u2217(z))2p(y|x,z)p(x)p(z).\n3\nSo the influence function is\nf (\u03c8 ,\u03c8 ,\u03c8 )\u03c6 +f (\u03c8 ,\u03c8 ,\u03c8 )\u03c6 +f (\u03c8 ,\u03c8 ,\u03c8 )\u03c6\n1 1 2 3 1 2 1 2 3 2 3 1 2 3 3\nwhere f = \u2202f/\u2202\u03c8 and \u03c6 is the influence function for \u03c8 . Hence,\nj j j j\n(cid:40) (cid:41)\n1 \u03c8 \u03c8\n1 2\n\u03c6 = \u221a \u03c6 \u2212 \u03c6 \u2212 \u03c6 .\n1 2 3\n\u03c6 \u03c6 2\u03c8 2\u03c8\n2 3 2 3\nNow\n(cid:90) (cid:90)\n\u03c8 = (\u00b5 (x)\u2212\u03c8 )(x\u2212m )p(x)dx = \u00b5 (x)(x\u2212m )p(x)dx\n1 0 0 X 0 X\n23"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_24_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 24,
+    "text": "Verdinelli and Wasserman\n(cid:82)\nwhere \u00b5 (x) = \u00b5(x,z)p(z). So\n0\n(cid:90) (cid:90) (cid:90)\n\u03c6 = \u00b5 (x)(cid:48)(x\u2212m )p(x) dx\u2212 \u00b5 (x)m(cid:48) p(x) dx+ \u00b5 (x)(x\u2212m )p(x)(cid:48) dx\n1 0 X 0 X 0 X\n(cid:90) (cid:90)\n= 7 \u00b5 (x)(cid:48)(x\u2212m )p(x) dx\u2212 \u00b5 (x)(X \u2212m )p(x) dx+\u00b5 (X)(X \u2212m )\u2212\u03c8\n0 X 0 X 0 X 1\n(cid:90)\n= \u00b5 (X)(X \u2212m )+ \u00b5 (x)(cid:48)(x\u2212m )p(x) dx\u22122\u03c8 .\n0 X 0 X 1\nNow\n(cid:90)\n\u00b5 (x)(cid:48) = \u00b5(cid:48)(x,z)p(z) dz+\u00b5(x,Z)\u2212\u00b5 (z)\n0 0\n(cid:90)\nY \u2212\u00b5(x,z)\n= I(X = x,Z = z)p(z) dz+\u00b5(x,Z)\u2212\u00b5 (z)\n0\np(x,z)\nY \u2212\u00b5(x,Z)\n= "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_24_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 24,
+    "text": "x,Z = z)p(z) dz+\u00b5(x,Z)\u2212\u00b5 (z)\n0\np(x,z)\nY \u2212\u00b5(x,Z)\n= I(x = X) p(Z)+\u00b5(x,Z)\u2212\u00b5 (z).\n0\np(x,Z)\nThus,\n(cid:40) (cid:41)\n(cid:90) (cid:90)\nY \u2212\u00b5(x,Z)\n\u00b5(cid:48)(x,z)p(z) dz = (x\u2212m)p(x) I(x = X) p(Z)+\u00b5(x,Z)\u2212\u00b5 (z)\n0\np(x,Z)\nY \u2212\u00b5(X,Z)\n= (X \u2212m) p(X)p(Z)+(X \u2212m)p(X)\u00b5(X,Z)\u2212\u00b5 (z)\n0\np(X,Z)\nSo\nY\u2212\u00b5(X,Z)\n\u03c6 = \u00b5 (X)(X \u2212m)+(X \u2212m) p(X)p(Z)+(X \u2212m)p(X)\u00b5(X,Z)\u2212\u00b5 (z)\u22122\u03c8 .\n1 0 p(X,Z) 0 1\nAlso\n\u03c6 = (X \u2212m)2\u2212\u03c32.\n2\nNow we turn to \u03c8 = (cid:82) (cid:82) (cid:82) (y\u2212\u00b5\u2217(z))2p(x,y,z). Then\n3\n(cid:90)\n\u03c6 = (Y \u2212v(Z))2\u2212\u03c8 \u22122 p(x,y,z)(y\u2212v(z))v(c"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_24_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 24,
+    "text": "3\n(cid:90)\n\u03c6 = (Y \u2212v(Z))2\u2212\u03c8 \u22122 p(x,y,z)(y\u2212v(z))v(cid:48)(z)dz\n3 3\n(cid:90)\n= (Y \u2212v(Z))2\u2212\u03c8 \u22122 p(x,z)(\u00b5\u2212v(z))v(cid:48)(z)dz\n3\nand\np(X)(Y \u2212\u00b5(X,z))\nv(cid:48)(z) = \u00b5(X,z)\u2212v(z)+I(z = Z)\np(X,z)\nso that\n\u03c6 = (Y \u2212v(Z))2\u2212\u03c8 \u22122 (cid:82) p(x,z)(\u00b5\u2212v(z))v(cid:48)(z)dz\n3 3\n= (Y \u2212v(Z))2\u2212\u03c8 \u22122 p(X)p(Z) (Y \u2212\u00b5(X,Z)).\n3 p(X,Z)\nTheremaindercanbeshowntobesecondorderinasimilarwayto\u03c8 . Weomitthedetails.\n0\n24"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_25_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 25,
+    "text": "Variable Importance\n7.4 Varying Coefficient Model\nLet \u00b5(x,z) = xT\u03b2(z)+f(z). In this case \u03c8 becomes \u03c8 = tr(\u03a3 H). Define\n0 4 X\nV(z) = Var[X|Z = z] C(z) = Cov[X,Y|Z = z]\nf(z) = \u00b5(z)\u2212\u03bd(z)T\u03b2(z) \u03b2(z) = V\u22121(Z)C(z)\nM = E[\u03b2(Z)] S = Var[\u03b2(Z)].\nLemma 6 The efficient influence function for \u03c8 is\n4\n\u03c6 = tr(\u03a3 \u03c6 )+(X \u2212m )TH(X \u2212m)\u2212\u03c8\nX H X 4\nwhere H = E[\u03b2(Z)\u03b2(Z)T],\n\u03c6 = \u03b2(Z)\u03b2(Z)T \u2212H +\u03b2(Z)[YXT \u2212\u03b2(Z)T(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))T]V\u22121(Z)\nH\n+ V\u22121(Z)[XY \u2212(X \u2212\u03bd(Z))(X \u2212\u03bd(Z))T\u03b2(Z)]\u03b2(Z)T.\nHence, the estimator is\n1 (cid:88) 1 (cid:88)"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_25_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 25,
+    "text": "Z)T.\nHence, the estimator is\n1 (cid:88) 1 (cid:88)\n\u03c8(cid:98)4 = tr(\u03a3(cid:98)X \u03c6(cid:98)H (U\ni\n))+ (X\ni\n\u2212X)TH(U\ni\n)(X\ni\n\u2212X).\nn n\ni i\nReferences\nKjersti Aas, Martin Jullum, and Anders L\u00f8land. Explaining individual predictions when\nfeatures are dependent: More accurate approximations to shapley values. arXiv preprint\narXiv:1903.10464, 2019.\nCl\u00b4ement B\u00b4enard, G\u00b4erard Biau, S\u00b4ebastien Da Veiga, and Erwan Scornet. Shaff: Fast and\nconsistent shapley effect estimates via random forests. arXiv preprint a"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_25_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 25,
+    "text": "ect estimates via random forests. arXiv preprint arXiv:2105.11724,\n2021.\nIan Covert and Su-In Lee. Improving kernelshap: Practical shapley value estimation via\nlinear regression. arXiv preprint arXiv:2012.01536, 2020.\nIan Covert, Scott Lundberg, and Su-In Lee. Understanding global feature contributions\nwith additive importance measures. arXiv preprint arXiv:2004.00668, 2020.\nBen Dai, Xiaotong Shen, and Wei Pan. Significance tests of feature relevance for a blackbox\nlearner. arXiv preprint arXiv:"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_25_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 25,
+    "text": "ance for a blackbox\nlearner. arXiv preprint arXiv:2103.04985, 2021.\nAlexander D\u2019Amour, Peng Ding, Avi Feller, Lihua Lei, and Jasjeet Sekhon. Overlap in\nobservational studies with high-dimensional covariates. Journal of Econometrics, 221(2):\n644\u2013654, 2021.\nDaniel Fryer, Inga Strumke, and Hien Nguyen. Shapley value confidence intervals for vari-\nable selection in regression models. 2020.\n25"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_26_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 26,
+    "text": "Verdinelli and Wasserman\nBryan S Graham and Cristine Campos de Xavier Pinto. Semiparametrically efficient esti-\nmation of the average linear regression function. Journal of Econometrics, 2021.\nArthurGretton, KarstenMBorgwardt, MalteJRasch, BernhardSch\u00a8olkopf, andAlexander\nSmola. A kernel two-sample test. The Journal of Machine Learning Research, 13(1):723\u2013\n773, 2012.\nOliver Hines, Oliver Dukes, Karla Diaz-Ordaz, and Stijn Vansteelandt. Demystifying sta-\ntistical learning based on efficient influ"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_26_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 26,
+    "text": "ng sta-\ntistical learning based on efficient influence functions. arXiv preprint arXiv:2107.00681,\n2021.\nRustam Ibragimov and Ulrich K Mu\u00a8ller. t-statistic based correlation and heterogeneity\nrobust inference. Journal of Business & Economic Statistics, 28(4):453\u2013468, 2010.\nOsnat Israeli. A shapley-based decomposition of the r-square of a linear regression. The\nJournal of Economic Inequality, 5(2):199\u2013212, 2007.\nJing Lei, Max G\u2019Sell, Alessandro Rinaldo, Ryan J Tibshirani, and Larry Wasserman.\nDis"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_26_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 26,
+    "text": "naldo, Ryan J Tibshirani, and Larry Wasserman.\nDistribution-free predictive inference for regression. Journal of the American Statisti-\ncal Association, 113(523):1094\u20131111, 2018.\nWei-Yin Loh and Peigen Zhou. Variable importance scores. arXiv preprint\narXiv:2102.07765, 2021.\nScottLundbergandSu-InLee. Anunexpectedunityamongmethodsforinterpretingmodel\npredictions. arXiv preprint arXiv:1611.07478, 2016.\nMasayoshi Mase, Art B Owen, and Benjamin Seiler. Explaining black box decisions by\nshapley cohort"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_26_3",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 26,
+    "text": ". Explaining black box decisions by\nshapley cohort refinement. arXiv preprint arXiv:1911.00467, 2019.\nAndreas Messalas, Yiannis Kanellopoulos, and Christos Makris. Model-agnostic inter-\npretability with shapley values. In 2019 10th International Conference on Information,\nIntelligence, Systems and Applications (IISA), pages 1\u20137. IEEE, 2019.\nWhitney K Newey and James R Robins. Cross-fitting and fast remainder rates for semi-\nparametric estimation. arXiv preprint arXiv:1801.09138, 2018.\nArt B Owen"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_26_4",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 26,
+    "text": " arXiv preprint arXiv:1801.09138, 2018.\nArt B Owen and Cl\u00b4ementine Prieur. On shapley value for measuring importance of depen-\ndent inputs. SIAM/ASA Journal on Uncertainty Quantification, 5(1):986\u20131002, 2017.\nMarco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. Model-agnostic interpretability\nof machine learning. arXiv preprint arXiv:1606.05386, 2016.\nAlessandroRinaldo,LarryWasserman,andMaxG\u2019Sell. Bootstrappingandsamplesplitting\nfor high-dimensional, assumption-lean inference. The Annals of S"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_26_5",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 26,
+    "text": "sional, assumption-lean inference. The Annals of Statistics, 47(6):3438\u2013\n3469, 2019.\nAlexander M Samarov. Exploring regression structure using nonparametric functional es-\ntimation. Journal of the American Statistical Association, 88(423):836\u2013847, 1993.\n26"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_27_0",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 27,
+    "text": "Variable Importance\nNumair Sani, Jaron Lee, Razieh Nabi, and Ilya Shpitser. A semiparametric approach to\ninterpretable machine learning. arXiv preprint arXiv:2006.04732, 2020.\nDino Sejdinovic, Bharath Sriperumbudur, Arthur Gretton, and Kenji Fukumizu. Equiv-\nalence of distance-based and rkhs-based statistics in hypothesis testing. The Annals of\nStatistics, pages 2263\u20132291, 2013.\nGa\u00b4bor J Sz\u00b4ekely, Maria L Rizzo, and Nail K Bakirov. Measuring and testing dependence\nby correlation of distances. Th"
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_27_1",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 27,
+    "text": "testing dependence\nby correlation of distances. The annals of statistics, 35(6):2769\u20132794, 2007.\nBrian Williamson and Jean Feng. Efficient nonparametric statistical inference on popula-\ntion feature importance using shapley values. In International Conference on Machine\nLearning, pages 10282\u201310291. PMLR, 2020.\nBrianDWilliamson,PeterBGilbert,NoahRSimon,andMarcoCarone.Aunifiedapproach\nforinferenceonalgorithm-agnosticvariableimportance.arXivpreprintarXiv:2004.03683,\n2020.\nBrian D Williamson, Peter "
+  },
+  {
+    "chunk_id": "doc_5dbefb04_chunk_27_2",
+    "doc_id": "doc_5dbefb04",
+    "doc_name": "ml_research_paper1.pdf",
+    "doc_type": "research_paper",
+    "published_date": "2024-01",
+    "source": "ml_research_paper1.pdf",
+    "page": 27,
+    "text": "arXiv:2004.03683,\n2020.\nBrian D Williamson, Peter B Gilbert, Marco Carone, and Noah Simon. Nonparametric\nvariable importance assessment using machine learning techniques. Biometrics, 77(1):\n9\u201322, 2021.\nLuZhangandLucasJanson. Floodgate: inferenceformodel-freevariableimportance. arXiv\npreprint arXiv:2007.01283, 2020.\n27"
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_0",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "# Artificial Intelligence in Healthcare: Transforming Medicine and Patient Care\n\nArtificial Intelligence (AI) is reshaping healthcare by improving diagnostics, personalizing treatment, and optimizing hospital operations. With the increasing availability of medical data and advances in machine learning, AI is becoming a critical tool for clinicians, researchers, and healthcare administrators.\n\n---\n\n## 1. The Evolution of AI in Healthcare\n\nThe use of computation in medicine dates back decades, but"
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_1",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "of computation in medicine dates back decades, but early systems were rule-based and limited in scope. Modern AI systems, powered by machine learning and deep learning, learn directly from data rather than relying on hand-crafted rules.\n\nKey milestones include:\n- Expert systems for diagnosis in the 1970s and 1980s\n- Medical imaging analysis using classical ML in the 2000s\n- Deep learning breakthroughs in radiology and pathology after 2012\n- Large-scale clinical decision support systems in recent"
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_2",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "-scale clinical decision support systems in recent years\n\nToday, AI systems can process massive datasets that include medical images, electronic health records (EHRs), genomic data, and real-time sensor data.\n\n---\n\n## 2. AI in Medical Imaging and Diagnostics\n\nMedical imaging is one of the most successful applications of AI in healthcare.\n\n### 2.1 Radiology\nDeep learning models can detect abnormalities in:\n- X-rays\n- CT scans\n- MRI images\n- Mammograms\n\nAI systems assist radiologists by:\n- Highlig"
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_3",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "rams\n\nAI systems assist radiologists by:\n- Highlighting suspicious regions\n- Reducing false negatives\n- Improving workflow efficiency\n\n### 2.2 Pathology\nIn digital pathology, AI models analyze tissue slides to:\n- Detect cancer cells\n- Grade tumors\n- Identify rare patterns invisible to the human eye\n\nThese tools help pathologists focus on complex cases while maintaining consistency and accuracy.\n\n---\n\n## 3. Personalized Medicine and Treatment Planning\n\nAI enables personalized healthcare by tailor"
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_4",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "ning\n\nAI enables personalized healthcare by tailoring treatments to individual patients.\n\n### 3.1 Genomics and Precision Medicine\nMachine learning models analyze genomic data to:\n- Predict disease risk\n- Identify drug-response patterns\n- Support targeted cancer therapies\n\n### 3.2 Treatment Recommendation Systems\nAI-driven systems combine:\n- Patient history\n- Clinical guidelines\n- Population-level data\n\nThis allows clinicians to choose optimal treatment plans with higher confidence.\n\n---\n\n## 4. A"
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_5",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "atment plans with higher confidence.\n\n---\n\n## 4. AI in Drug Discovery and Development\n\nDrug discovery is traditionally expensive and time-consuming. AI significantly accelerates this process.\n\n### 4.1 Molecule Discovery\nAI models:\n- Predict molecular properties\n- Identify promising drug candidates\n- Reduce laboratory experimentation costs\n\n### 4.2 Clinical Trials Optimization\nAI helps by:\n- Identifying suitable trial participants\n- Predicting trial outcomes\n- Monitoring patient adherence\n\nThis s"
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_6",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "al outcomes\n- Monitoring patient adherence\n\nThis shortens development timelines and lowers failure rates.\n\n---\n\n## 5. Hospital Operations and Workflow Optimization\n\nBeyond clinical care, AI improves hospital efficiency.\n\nApplications include:\n- Predicting patient admission rates\n- Optimizing staff scheduling\n- Managing supply chains\n- Reducing emergency room wait times\n\nPredictive analytics help hospitals allocate resources more effectively and improve patient satisfaction.\n\n---\n\n## 6. Ethical, "
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_7",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "mprove patient satisfaction.\n\n---\n\n## 6. Ethical, Legal, and Privacy Challenges\n\nDespite its promise, AI in healthcare presents serious challenges.\n\n### 6.1 Data Privacy\nHealthcare data is highly sensitive. Ensuring compliance with regulations such as HIPAA and GDPR is critical.\n\n### 6.2 Bias and Fairness\nAI models trained on biased datasets can:\n- Produce inaccurate diagnoses\n- Worsen healthcare disparities\n\n### 6.3 Explainability\nClinicians must understand AI recommendations. Black-box models "
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_8",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": "t understand AI recommendations. Black-box models can reduce trust and hinder adoption.\n\n---\n\n## 7. The Future of AI in Healthcare\n\nThe future will likely include:\n- AI-assisted clinicians, not replacements\n- Real-time health monitoring via wearables\n- Integration of multimodal data (text, images, signals)\n- Stronger regulatory frameworks\n\nAI will augment human expertise, allowing healthcare professionals to focus more on patient care and complex decision-making.\n\n---\n\n## Conclusion\n\nArtificial "
+  },
+  {
+    "chunk_id": "doc_d18b6434_chunk_1_9",
+    "doc_id": "doc_d18b6434",
+    "doc_name": "ai_healthcare_blog.md",
+    "doc_type": "blog",
+    "published_date": "2025-01",
+    "source": "ai_healthcare_blog.md",
+    "page": 1,
+    "text": " decision-making.\n\n---\n\n## Conclusion\n\nArtificial Intelligence has the potential to revolutionize healthcare by improving accuracy, efficiency, and personalization. However, success depends on responsible deployment, ethical oversight, and collaboration between technologists and medical professionals. When used correctly, AI can lead to better outcomes for patients and healthcare systems worldwide.\n"
+  },
+  {
+    "chunk_id": "doc_29dec407_chunk_1_0",
+    "doc_id": "doc_29dec407",
+    "doc_name": "ml_notes.txt",
+    "doc_type": "notes",
+    "published_date": "2026-01",
+    "source": "ml_notes.txt",
+    "page": 1,
+    "text": "PAGE 1: INTRODUCTION TO ML IN PERSONNEL MANAGEMENT\n--------------------------------------------------\nMachine Learning (ML) is increasingly used in personnel and human resource\nmanagement to support data-driven decision-making. Personnel ML focuses on\nanalyzing employee-related data to improve hiring, performance evaluation,\nretention, and workforce planning.\n\nCommon data sources include resumes, application forms, performance reviews,\nattendance logs, engagement surveys, payroll data, and train"
+  },
+  {
+    "chunk_id": "doc_29dec407_chunk_1_1",
+    "doc_id": "doc_29dec407",
+    "doc_name": "ml_notes.txt",
+    "doc_type": "notes",
+    "published_date": "2026-01",
+    "source": "ml_notes.txt",
+    "page": 1,
+    "text": " logs, engagement surveys, payroll data, and training records.\nThese datasets may be structured (tables, scores) or unstructured (text,\nemails, feedback).\n\nKey objectives of personnel ML:\n- Improve quality and speed of recruitment\n- Reduce employee turnover\n- Identify high-potential employees\n- Detect bias and ensure fairness\n- Optimize training and development programs\n\nChallenges specific to personnel ML:\n- Data privacy and legal compliance (GDPR, labor laws)\n- Bias and discrimination risks\n- "
+  },
+  {
+    "chunk_id": "doc_29dec407_chunk_1_2",
+    "doc_id": "doc_29dec407",
+    "doc_name": "ml_notes.txt",
+    "doc_type": "notes",
+    "published_date": "2026-01",
+    "source": "ml_notes.txt",
+    "page": 1,
+    "text": "PR, labor laws)\n- Bias and discrimination risks\n- Interpretability of models\n- Ethical use of employee data\n\nTypical ML task types:\n- Classification (e.g., hire/no-hire, promotion readiness)\n- Regression (e.g., performance score prediction)\n- Clustering (e.g., employee segmentation)\n- Natural Language Processing (resume screening, feedback analysis)\n\n--------------------------------------------------\n\n\nPAGE 2: RECRUITMENT AND TALENT ACQUISITION\n-----------------------------------------\nML plays "
+  },
+  {
+    "chunk_id": "doc_29dec407_chunk_1_3",
+    "doc_id": "doc_29dec407",
+    "doc_name": "ml_notes.txt",
+    "doc_type": "notes",
+    "published_date": "2026-01",
+    "source": "ml_notes.txt",
+    "page": 1,
+    "text": "----------------------------------------\nML plays a major role in modern recruitment pipelines. Automated resume\nscreening systems use NLP techniques to extract skills, experience, and\neducation from resumes and compare them against job requirements.\n\nKey techniques:\n- Keyword extraction and embeddings\n- Similarity scoring between resumes and job descriptions\n- Ranking candidates based on predicted job fit\n\nCommon models:\n- Logistic Regression\n- Random Forests\n- Gradient Boosting\n- Transformer-b"
+  },
+  {
+    "chunk_id": "doc_29dec407_chunk_1_4",
+    "doc_id": "doc_29dec407",
+    "doc_name": "ml_notes.txt",
+    "doc_type": "notes",
+    "published_date": "2026-01",
+    "source": "ml_notes.txt",
+    "page": 1,
+    "text": "Random Forests\n- Gradient Boosting\n- Transformer-based NLP models (for text-heavy tasks)\n\nBenefits:\n- Reduced time-to-hire\n- Consistent candidate evaluation\n- Ability to process large applicant pools\n\nRisks:\n- Historical hiring bias reflected in training data\n- Over-reliance on automated screening\n- Exclusion of non-traditional candidates\n\nBest practices:\n- Regular bias audits\n- Human-in-the-loop decision-making\n- Transparent scoring criteria\n- Diverse training datasets\n\n------------------------"
+  },
+  {
+    "chunk_id": "doc_29dec407_chunk_1_5",
+    "doc_id": "doc_29dec407",
+    "doc_name": "ml_notes.txt",
+    "doc_type": "notes",
+    "published_date": "2026-01",
+    "source": "ml_notes.txt",
+    "page": 1,
+    "text": "iverse training datasets\n\n--------------------------------------------------\n\n\nPAGE 3: PERFORMANCE MANAGEMENT AND PREDICTION\n---------------------------------------------\nPerformance management ML models aim to predict or evaluate employee\nperformance using historical data. Inputs may include KPIs, peer reviews,\nmanager ratings, project outcomes, and attendance patterns.\n\nUse cases:\n- Performance score prediction\n- Early identification of underperformers\n- Recognition of high-performing employee"
+  },
+  {
+    "chunk_id": "doc_29dec407_chunk_1_6",
+    "doc_id": "doc_29dec407",
+    "doc_name": "ml_notes.txt",
+    "doc_type": "notes",
+    "published_date": "2026-01",
+    "source": "ml_notes.txt",
+    "page": 1,
+    "text": "rformers\n- Recognition of high-performing employees\n- Objective support for promot\n"
+  }
+]
