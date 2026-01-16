@@ -11,13 +11,13 @@ production-grade GenAI system instead of relying on black-box APIs.
 
 ## Architecture Overview
 
-Raw Documents (PDFs)<br>
+Raw Documents (PDFs, Markdown, Text)<br>
 ↓<br>
-Page-Level Ingestion<br>
+Document Registration & Page-Level Ingestion<br>
 ↓<br>
 Text Cleaning & Normalization<br>
 ↓<br>
-Semantic Chunking<br>
+Semantic Chunking with Source Metadata<br>
 ↓<br>
 Embeddings & Vector Search (FAISS)<br>
 ↓<br>
@@ -30,15 +30,16 @@ Local LLM (Ollama) — Grounded Answer / Refusal
 ---
 
 **Note:** Small processed data samples are included under `data/processed/`
-to keep the pipeline reproducible and easy to review.
+to keep the pipeline reproducible, inspectable, and easy to review.
 
 ---
 
 ## Module 1: Document Ingestion
 
-- Ingests PDF documents page-by-page
+- Ingests documents page-by-page
+- Supports multiple formats (PDF, Markdown, Text)
 - Preserves source filename and page numbers
-- Produces a consistent internal document schema
+- Produces a consistent internal document representation
 
 **Why page-level ingestion?**  
 Page-level granularity enables precise citation, debugging of retrieval
@@ -73,7 +74,7 @@ Each chunk retains:
 - source document
 - page number
 
-This enables precise citations and debugging.
+This enables precise citations and systematic debugging.
 
 **Key insight:**  
 Chunking is a retrieval decision, not a preprocessing afterthought.
@@ -200,6 +201,71 @@ Most hallucinations are retrieval failures, not model failures.
 
 ---
 
+## Module 7: Multi-Document Ingestion & Source Identity
+
+This module upgrades the system from single-document RAG to a
+**multi-document, source-aware architecture**.
+
+The focus is on preserving **document identity and provenance**
+so that downstream components can reason across sources reliably.
+
+---
+
+### Document Registry
+
+Each document is registered with stable metadata:
+
+- `doc_id` (deterministic, hash-based)
+- `doc_name`
+- `doc_type` (research paper, blog, notes, etc.)
+- `published_date`
+
+This guarantees:
+- consistent document identity across runs
+- traceability of every chunk
+- a foundation for trust and recency-aware retrieval
+
+---
+
+### Multi-Document Ingestion
+
+- Supports ingesting multiple documents of different types
+- Documents are explicitly declared and registered
+- All documents are processed uniformly into a shared chunk space
+
+---
+
+### Chunking with Ownership
+
+Text chunking remains a **pure operation**:
+- `chunker.py` only splits raw text
+- No document or metadata logic inside chunking
+
+Document ownership and metadata are attached **after chunking** during ingestion.
+
+Each chunk contains:
+- `chunk_id` (globally unique)
+- `doc_id`
+- `doc_name`
+- `doc_type`
+- `published_date`
+- `page`
+- `text`
+
+---
+
+### Output
+
+A new processed dataset is generated:
+This dataset replaces the single-document chunk file for all subsequent
+retrieval and generation stages.
+
+**Key insight:**  
+Multi-source reasoning begins with disciplined document identity,
+not more sophisticated models.
+
+---
+
 ## Status
 
 - [x] Document Ingestion
@@ -208,6 +274,9 @@ Most hallucinations are retrieval failures, not model failures.
 - [x] Embeddings & Vector Indexing
 - [x] Retrieval Engineering (Hybrid, Reranking, Confidence)
 - [x] Local LLM Integration
+- [x] Multi-Document Ingestion & Source Identity
+- [ ] Source-Aware Retrieval
+- [ ] Feedback & Learning Loop
 - [ ] Evaluation & UX Polish
 
 ---
