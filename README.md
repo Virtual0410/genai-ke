@@ -266,7 +266,7 @@ not more sophisticated models.
 
 ---
 
-## Module 8: Source-Aware Retrieval & Document-Level Reasoning (Exceptional)
+## Module 8: Source-Aware Retrieval & Document-Level Reasoning
 
 This module upgrades retrieval from **chunk-level ranking**
 to **document-aware evidence aggregation**.
