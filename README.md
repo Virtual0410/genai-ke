@@ -266,24 +266,97 @@ not more sophisticated models.
 
 ---
 
-## Status
+## Module 8: Source-Aware Retrieval & Document-Level Reasoning (Exceptional)
+
+This module upgrades retrieval from **chunk-level ranking**
+to **document-aware evidence aggregation**.
+
+Instead of treating all retrieved chunks equally,
+the system now reasons about *which documents dominate the answer space*.
+
+---
+
+### Motivation
+
+Pure chunk-level retrieval fails when:
+- multiple documents contribute conflicting information
+- newer but less reliable sources overshadow research
+- relevance must be explained, not just ranked
+
+introduces **document-level reasoning** to address these issues.
+
+---
+
+### Document-Level Grouping
+
+Retrieved chunks are grouped by `doc_id`:
+
+- All chunks from the same document are aggregated
+- Document-level statistics are computed:
+  - maximum relevance score
+  - average relevance score
+  - number of contributing chunks
+
+This enables the system to answer:
+> “Which sources actually support this answer?”
+
+---
+
+### Document-Level Scoring
+
+For each document, the system computes:
+
+- `max_score`: strongest supporting evidence
+- `avg_score`: overall relevance consistency
+- `chunk_count`: coverage depth
+
+Documents now *compete as sources*, not just as isolated chunks.
+
+---
+
+### Source-Aware Retrieval Output
+
+The retrieval pipeline now produces:
+
+1. A **document-level summary**  
+   (which sources dominate and why)
+
+2. A **chunk-level breakdown**  
+   (traceable evidence with page numbers)
+
+This makes retrieval behavior:
+- explainable
+- debuggable
+- auditable
+
+---
+
+### Design Principle
+
+> Retrieval quality improves when documents compete, not individual chunks.
+
+establishes the foundation for:
+- trust weighting
+- recency bias
+- conflict detection
+- source prioritization
+
+These are implemented in subsequent modules.
+
+---
+
+### Status Update
 
 - [x] Document Ingestion
 - [x] Cleaning & Normalization
 - [x] Chunking
 - [x] Embeddings & Vector Indexing
-- [x] Retrieval Engineering (Hybrid, Reranking, Confidence)
+- [x] Hybrid Retrieval & Reranking
+- [x] Hallucination Control
 - [x] Local LLM Integration
-- [x] Multi-Document Ingestion & Source Identity
-- [ ] Source-Aware Retrieval
+- [x] Multi-Document Ingestion & Metadata
+- [x] **Source-Aware Retrieval & Document-Level Reasoning**
+- [ ] Trust & Recency Weighting
+- [ ] Conflict Detection
 - [ ] Feedback & Learning Loop
-- [ ] Evaluation & UX Polish
 
----
-
-## Design Philosophy
-
-- Retrieval-first reasoning
-- Explicit failure handling
-- Explainable system behavior
-- Offline, reproducible, and safe GenAI
