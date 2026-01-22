@@ -345,6 +345,97 @@ These are implemented in subsequent modules.
 
 ---
 
+## Module 9: Authority-Aware Retrieval (Trust, Recency & Conflict Resolution)
+
+This module introduces **decision policy** into the retrieval system.
+
+Instead of ranking sources purely by semantic similarity,
+the system now evaluates *which sources should be trusted more*,
+*which should be preferred due to recency*, and
+*when multiple sources disagree*.
+
+---
+
+### Motivation
+
+Pure relevance-based retrieval fails in real-world settings:
+
+- Blogs may be newer but less reliable than research papers
+- Notes may be most recent but incomplete or informal
+- Multiple sources may provide conflicting perspectives
+
+Day 10 formalizes **authority-aware retrieval** to address these issues.
+
+---
+
+### Trust Policy
+
+Each document type is assigned an explicit trust weight:
+
+- `research_paper` → highest trust
+- `blog` → medium trust
+- `notes` → lowest trust
+
+Trust is treated as a **policy decision**, not a learned parameter,
+making system behavior transparent and auditable.
+
+---
+
+### Recency Scoring
+
+Documents are scored based on publication date using:
+
+- bounded linear decay
+- capped influence (older documents never dominate negatively)
+- explainable behavior
+
+Recency influences ranking without overriding trust or relevance.
+
+---
+
+### Authority Score
+
+Each document receives a final **authority score** combining:
+
+- semantic relevance (from retrieval)
+- trust weight (document type)
+- recency score (publication date)
+
+This score determines **which sources dominate the answer space**.
+
+Authority scoring ensures:
+- trusted sources are preferred
+- newer information is considered
+- relevance remains the primary signal
+
+---
+
+### Conflict Detection
+
+When multiple documents provide similarly strong support,
+the system flags a **potential conflict** instead of silently choosing one.
+
+This allows downstream components to:
+- surface uncertainty
+- request clarification
+- present multiple perspectives when appropriate
+
+---
+
+### Outcome
+
+Retrieval output now includes:
+
+1. **Document authority ranking**
+2. **Document-level evidence summaries**
+3. **Traceable chunk-level citations**
+4. **Explicit conflict signals**
+
+This enables safe, explainable, and policy-driven context selection
+for grounded generation.
+
+---
+
 ### Status Update
 
 - [x] Document Ingestion
@@ -355,8 +446,10 @@ These are implemented in subsequent modules.
 - [x] Hallucination Control
 - [x] Local LLM Integration
 - [x] Multi-Document Ingestion & Metadata
-- [x] **Source-Aware Retrieval & Document-Level Reasoning**
-- [ ] Trust & Recency Weighting
-- [ ] Conflict Detection
+- [x] Source-Aware Retrieval
+- [x] **Authority-Aware Retrieval (Trust & Recency)**
+- [x] **Conflict Detection**
+- [ ] Policy-Aware Context Selection
+- [ ] Citation-Controlled Generation
 - [ ] Feedback & Learning Loop
 
