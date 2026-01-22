@@ -80,6 +80,42 @@ if not has_enough_context(final_results):
 grouped = group_by_document(final_results)
 doc_scores = score_documents(grouped)
 
+from retrieval.authority import authority_score
+from retrieval.conflict import detect_conflict
+
+# Build document metadata map
+doc_meta = {}
+for r in final_results:
+    d = r["data"]
+    doc_meta[d["doc_id"]] = {
+        "doc_type": d["doc_type"],
+        "published_date": d["published_date"],
+        "doc_name": d["doc_name"]
+    }
+
+# Compute authority scores
+doc_authority = {}
+for doc_id, stats in doc_scores.items():
+    doc_authority[doc_id] = authority_score(
+        stats,
+        doc_meta[doc_id]
+    )
+
+print("\nDocument authority ranking:\n")
+
+for doc_id, score in sorted(
+    doc_authority.items(),
+    key=lambda x: x[1],
+    reverse=True
+):
+    meta = doc_meta[doc_id]
+    print(f"{doc_id} ({meta['doc_type']}, {meta['published_date']}): {score:.3f}")
+
+
+if detect_conflict(grouped):
+    print("\n⚠️  Potential conflict detected between sources.")
+
+
 # Output
 
 print("\nDocument-level summary:\n")
