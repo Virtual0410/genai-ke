@@ -7,7 +7,9 @@ from retrieval.keyword_retriever import KeywordRetriever
 from retrieval.reranker import rerank
 from retrieval.grouping import group_by_document, score_documents
 from retrieval.confidence import has_enough_context
-
+from retrieval.context_selector import select_context
+from llm.context_formatter import format_context
+from llm.prompt import SYSTEM_PROMPT
 
 with open("data/processed/sample_chunks_multi.json", "r", encoding="utf-8") as f:
     chunks = json.load(f)
@@ -134,3 +136,19 @@ for r in final_results:
     print(f"Score: {r['score']:.3f}")
     print(r["data"]["text"][:300])
     print("------")
+
+selected_chunks = select_context(
+    grouped_results=grouped,
+    doc_authority=doc_authority,
+    max_docs=2,
+    max_chunks_per_doc=3
+)
+
+if not selected_chunks:
+    print("NO TRUSTED CONTEXT — refusing to generate answer")
+    exit()
+
+context = format_context(selected_chunks)
+
+print("\nFinal context passed to LLM:\n")
+print(context)

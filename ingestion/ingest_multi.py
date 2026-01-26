@@ -8,17 +8,27 @@ DOCUMENTS = [
     {
         "path": "data/raw/research/ml_research_paper1.pdf",
         "doc_type": "research_paper",
-        "published_date": "2024-01"
+        "published_date": "2024-01-01"
+    },
+    {
+        "path": "data/raw/research/ml_research_paper2.pdf",
+        "doc_type": "research_paper",
+        "published_date": "2024-01-02"
+    },
+    {
+        "path": "data/raw/research/ml_research_paper3.pdf",
+        "doc_type": "research_paper",
+        "published_date": "2024-03-12"
     },
     {
         "path": "data/raw/blogs/ai_healthcare_blog.md",
         "doc_type": "blog",
-        "published_date": "2025-01"
+        "published_date": "2025-07-07"
     },
     {
         "path": "data/raw/notes/ml_notes.txt",
         "doc_type": "notes",
-        "published_date": "2026-01"
+        "published_date": "2025-11-22"
     }
 ]
 
