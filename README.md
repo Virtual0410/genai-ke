@@ -494,6 +494,73 @@ not force agreement where evidence is limited.
 
 ---
 
+## Module 14: Research Gap Detection (Day 15)
+
+This module enables the research assistant to identify
+areas where evidence is limited or perspectives are missing.
+
+Rather than forcing conclusions, the assistant now surfaces
+uncertainty and highlights under-explored topics.
+
+---
+
+### Motivation
+
+Academic value often comes from recognizing:
+
+- limited coverage
+- missing viewpoints
+- shallow evidence
+- inconclusive findings
+
+Day 15 introduces mechanisms to detect such research gaps.
+
+---
+
+### Gap Detection Logic
+
+The assistant analyzes:
+
+- number of sources discussing a topic
+- stance diversity
+- cross-document coverage
+
+Signals generated include:
+
+- limited source availability
+- absence of evaluative perspectives
+- insufficient comparison opportunities
+
+---
+
+### Observed Behavior
+
+Testing confirmed that the assistant:
+
+- avoids inventing conclusions
+- identifies shallow evidence areas
+- acknowledges when comparisons are not possible
+- preserves academic caution
+
+---
+
+### Key Insight
+
+> Responsible research assistants highlight what is missing,
+not just what is present.
+
+---
+
+### Limitations
+
+Current gap detection:
+
+- relies on document availability
+- does not infer latent research opportunities
+- depends on explicit evidence patterns
+
+These limitations guide future improvements.
+
 ### Status Update
 
 - [x] Document Ingestion
@@ -510,6 +577,6 @@ not force agreement where evidence is limited.
 - [x] Evaluation & Reliability Testing
 - [x] Multi-Hop Reasoning & Synthesis
 - [x] Argument Comparison & Stance Detection
-- [ ] Research Gap Detection
+- [X] Research Gap Detection
 - [ ] Insight Generation
 - [ ] UX Interface Layer
