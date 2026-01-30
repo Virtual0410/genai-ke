@@ -311,6 +311,107 @@ but by refusing responsibly and citing evidence consistently.
 
 ---
 
+## Module 12: Multi-Hop Reasoning & Academic Synthesis (Day 13)
+
+This module extends the research assistant from single-source retrieval
+to **multi-hop reasoning across documents**.
+
+Instead of answering questions using isolated evidence,
+the system now detects when multiple sources must be combined
+to produce academically meaningful responses.
+
+---
+
+### Motivation
+
+Academic questions often require:
+
+- comparing ideas across papers
+- synthesizing viewpoints
+- linking related concepts
+- identifying patterns across sources
+
+Single-chunk retrieval is insufficient for these tasks.
+
+Day 13 introduces **evidence synthesis** to support
+higher-level academic reasoning.
+
+---
+
+### Synthesis Query Detection
+
+The assistant now identifies queries that require
+cross-document reasoning using keyword signals such as:
+
+- compare
+- contrast
+- across
+- difference
+- relationship
+- synthesize
+- combine
+
+When detected, the system switches from
+fact retrieval to evidence aggregation.
+
+---
+
+### Evidence Grouping
+
+Retrieved chunks are grouped by document source,
+allowing the assistant to:
+
+- preserve context integrity
+- avoid mixing unrelated arguments
+- maintain citation traceability
+
+This ensures synthesis remains grounded and auditable.
+
+---
+
+### Multi-Document Context Construction
+
+The assistant constructs synthesis-ready context by:
+
+- selecting top evidence from multiple trusted documents
+- preserving citation mapping
+- preventing low-authority sources from entering context
+
+This enables structured academic comparisons.
+
+---
+
+### Observed Behavior
+
+Testing confirmed that the assistant can:
+
+- retrieve relevant sources across documents
+- maintain authority-aware filtering
+- preserve citation discipline
+- avoid hallucination during synthesis
+- surface multiple perspectives when appropriate
+
+---
+
+### Limitations
+
+Current synthesis capabilities:
+
+- do not perform deep argument comparison
+- may include semantically adjacent but not directly comparable chunks
+- rely on embedding similarity rather than conceptual understanding
+
+These limitations guide future enhancements.
+
+---
+
+### Key Insight
+
+> Academic reasoning requires connecting evidence responsibly,
+not merging sources blindly.
+
+---
+
 ### Status Update
 
 - [x] Document Ingestion
@@ -325,6 +426,7 @@ but by refusing responsibly and citing evidence consistently.
 - [x] Authority-Aware Retrieval
 - [x] Policy-Aware Context Selection
 - [x] Evaluation & Reliability Testing
-- [ ] Multi-Hop Reasoning
-- [ ] Academic Summarization
+- [x] Multi-Hop Reasoning & Synthesis
+- [ ] Argument Comparison
+- [ ] Research Gap Detection
 - [ ] UX Interface Layer
