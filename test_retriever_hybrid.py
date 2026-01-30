@@ -12,6 +12,8 @@ from retrieval.context_selector import select_context
 from llm.context_formatter import format_context
 from llm.prompt import SYSTEM_PROMPT
 from retrieval.stance import detect_stance, group_by_stance
+from retrieval.gap_detector import detect_research_gaps
+from llm.report_generator import generate_research_report
 
 with open("data/processed/sample_chunks_multi.json", "r", encoding="utf-8") as f:
     chunks = json.load(f)
@@ -46,7 +48,7 @@ semantic_retriever = Retriever(embedder, vector_store)
 
 keyword_retriever = KeywordRetriever(metadata)
 
-query = "Do the papers agree on federated learning benefits?"
+query = "How is explainable AI evaluated across sources?"
 
 semantic_results = semantic_retriever.retrieve(query)
 keyword_results = keyword_retriever.retrieve(query)
@@ -162,6 +164,22 @@ stance_groups = group_by_stance(selected_chunks)
 print("\nStance Summary:\n")
 for stance, items in stance_groups.items():
     print(f"{stance}: {len(items)} sources")
+
+gap_insights = detect_research_gaps(grouped, stance_groups)
+
+print("\nResearch Gap Signals:\n")
+for insight in gap_insights:
+    print("-", insight)
+
+report = generate_research_report(
+    query=query,
+    stance_groups=stance_groups,
+    gap_insights=gap_insights,
+    selected_chunks=selected_chunks
+)
+
+print("\nAcademic Insight Report:\n")
+print(report)
 
 # --- Final Context Formatting ---
 context = format_context(selected_chunks)
