@@ -197,7 +197,121 @@ Safety is decided before the model ever sees the prompt.
 
 ---
 
-## Status
+## Module 11: Evaluation & Academic Reliability Testing (Day 12)
+
+This module focuses on **systematic evaluation** of the research assistant
+to ensure reliability, safe refusal behavior, and citation discipline.
+
+Instead of introducing new features, this stage validates whether
+the system behaves responsibly under different query conditions.
+
+---
+
+### Evaluation Objectives
+
+The evaluation stage verifies that the assistant:
+
+- retrieves relevant academic sources
+- prioritizes trusted documents
+- cites evidence deterministically
+- refuses unsupported questions
+- surfaces uncertainty when sources conflict
+
+This ensures the assistant behaves like a **responsible research tool**
+rather than a speculative chatbot.
+
+---
+
+### Evaluation Categories
+
+The system was tested across five query types:
+
+#### 1. Direct Evidence Queries
+Questions where answers clearly exist in the dataset.
+
+Expected behavior:
+- correct document dominance
+- accurate citations
+- no hallucination
+
+---
+
+#### 2. Cross-Document Queries
+Questions requiring synthesis across multiple sources.
+
+Expected behavior:
+- retrieval of multiple trusted documents
+- balanced representation of perspectives
+- no forced agreement
+
+---
+
+#### 3. No-Evidence Queries
+Questions not supported by the dataset.
+
+Expected behavior:
+- explicit refusal
+- no speculative answers
+
+---
+
+#### 4. Conflict-Oriented Queries
+Questions where sources may differ in perspective.
+
+Expected behavior:
+- conflict awareness
+- no blind preference
+- transparent evidence presentation
+
+---
+
+#### 5. Out-of-Scope Queries
+Questions unrelated to the dataset.
+
+Expected behavior:
+- refusal
+- no external knowledge injection
+
+---
+
+### Observed System Behavior
+
+Evaluation confirmed:
+
+- authority ranking consistently prioritizes research papers
+- context selection excludes low-trust sources
+- citation mapping remains deterministic
+- refusal triggers correctly when evidence is insufficient
+- conflict signals surface when documents compete
+
+These results demonstrate that the assistant maintains
+academic integrity and avoids hallucination by design.
+
+---
+
+### Limitations Identified
+
+The evaluation process highlighted current system boundaries:
+
+- dependent on document quality and coverage
+- authority scoring remains heuristic
+- conflict detection is approximate
+- limited multi-hop reasoning
+- no long-form argument synthesis yet
+
+These limitations are acknowledged to maintain transparency
+and guide future improvements.
+
+---
+
+### Key Insight
+
+> A research assistant earns trust not by answering everything,
+but by refusing responsibly and citing evidence consistently.
+
+---
+
+### Status Update
 
 - [x] Document Ingestion
 - [x] Cleaning & Normalization
@@ -209,17 +323,8 @@ Safety is decided before the model ever sees the prompt.
 - [x] Multi-Document Ingestion
 - [x] Source-Aware Retrieval
 - [x] Authority-Aware Retrieval
-- [x] Policy-Aware Context Selection & Citations
-- [ ] Evaluation & Stress Testing
-- [ ] Feedback & Learning Loop
-- [ ] UX & Interface Layer
-
----
-
-## Design Philosophy
-
-- Retrieval-first reasoning
-- Explicit failure handling
-- Explainable system behavior
-- No hallucination by construction
-- Offline, reproducible, and safe GenAI
+- [x] Policy-Aware Context Selection
+- [x] Evaluation & Reliability Testing
+- [ ] Multi-Hop Reasoning
+- [ ] Academic Summarization
+- [ ] UX Interface Layer
