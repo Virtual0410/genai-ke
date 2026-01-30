@@ -1,5 +1,6 @@
 import json
-
+from retrieval.query_type import requires_synthesis
+from retrieval.synthesis import group_chunks_by_source, build_synthesis_context
 from embeddings.embedder import Embedder
 from embeddings.vector_store import VectorStore
 from retrieval.retriever import Retriever
@@ -44,7 +45,7 @@ semantic_retriever = Retriever(embedder, vector_store)
 
 keyword_retriever = KeywordRetriever(metadata)
 
-query = "What future trends in machine learning are discussed?"
+query = "How do the papers compare explainable AI and federated learning?"
 
 semantic_results = semantic_retriever.retrieve(query)
 keyword_results = keyword_retriever.retrieve(query)
@@ -117,7 +118,6 @@ for doc_id, score in sorted(
 if detect_conflict(grouped):
     print("\n⚠️  Potential conflict detected between sources.")
 
-
 # Output
 
 print("\nDocument-level summary:\n")
@@ -152,3 +152,7 @@ context = format_context(selected_chunks)
 
 print("\nFinal context passed to LLM:\n")
 print(context)
+
+if requires_synthesis(query):
+    grouped_chunks = group_chunks_by_source(selected_chunks)
+    context = build_synthesis_context(grouped_chunks)
