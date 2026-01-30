@@ -561,6 +561,102 @@ Current gap detection:
 
 These limitations guide future improvements.
 
+---
+
+## Day 17: Topic Coherence Filtering & Research Validity Checks
+
+Day 17 focused on improving retrieval precision and ensuring that only
+topically relevant evidence reaches the synthesis stage.
+
+---
+
+### Topic Coherence Filtering
+
+A coherence filter was introduced to:
+- Remove chunks loosely related to the query
+- Reduce cross-topic noise
+- Improve academic reliability of context selection
+
+This prevents unrelated sections from being misinterpreted as evidence.
+
+---
+
+### Why Coherence Filtering Matters
+
+Even high-similarity chunks may:
+- Share vocabulary but differ in intent
+- Be technically relevant but contextually misleading
+
+Coherence filtering ensures:
+- Context aligns with query intent
+- Evidence remains academically valid
+- Final synthesis avoids distortion
+
+---
+
+### Research Gap Detection Enhancement
+
+The system now explicitly identifies:
+- Lack of evaluative perspectives
+- Missing comparative analysis
+- Neutral-only evidence scenarios
+
+When evidence is insufficient, the system:
+- Signals a research gap
+- Avoids forced conclusions
+- Maintains intellectual honesty
+
+---
+
+### Stance Validation Refinement
+
+Stance detection now better distinguishes:
+- Support
+- Questioning
+- Mixed perspectives
+- Neutral discussion
+
+This improves synthesis reliability and prevents misclassification.
+
+---
+
+### Academic Insight Reporting Upgrade
+
+The generated report now includes:
+- Source coverage summary
+- Evidence perspective analysis
+- Identified research gaps
+- Key contributing sources
+
+This mirrors how literature reviews are conducted in academic research.
+
+---
+
+### Key Insight
+
+High-quality GenAI systems should:
+- Detect when evidence is missing
+- Avoid speculative answers
+- Signal uncertainty transparently
+
+This project now reflects responsible AI behavior rather than
+hallucination-prone generation.
+
+---
+
+### System Maturity After Day 17
+
+The GenAI Knowledge Engine can now:
+- Filter context by semantic similarity
+- Validate topical coherence
+- Detect stance diversity
+- Identify research gaps
+- Produce academically grounded synthesis context
+
+This marks a transition from retrieval system to research assistant.
+
+---
+
 ### Status Update
 
 - [x] Document Ingestion
