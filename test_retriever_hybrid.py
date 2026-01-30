@@ -14,6 +14,7 @@ from llm.prompt import SYSTEM_PROMPT
 from retrieval.stance import detect_stance, group_by_stance
 from retrieval.gap_detector import detect_research_gaps
 from llm.report_generator import generate_research_report
+from retrieval.coherence_filter import filter_by_topic_coherence
 
 with open("data/processed/sample_chunks_multi.json", "r", encoding="utf-8") as f:
     chunks = json.load(f)
@@ -48,7 +49,7 @@ semantic_retriever = Retriever(embedder, vector_store)
 
 keyword_retriever = KeywordRetriever(metadata)
 
-query = "How is explainable AI evaluated across sources?"
+query = "Do papers compare federated learning drawbacks?"
 
 semantic_results = semantic_retriever.retrieve(query)
 keyword_results = keyword_retriever.retrieve(query)
@@ -149,6 +150,13 @@ selected_chunks = select_context(
 
 if not selected_chunks:
     print("NO TRUSTED CONTEXT — refusing to generate answer")
+    exit()
+
+# ✅ MOVED HERE — COHERENCE FILTER (ONLY REORDERED)
+selected_chunks = filter_by_topic_coherence(query, selected_chunks)
+
+if not selected_chunks:
+    print("NO COHERENT CONTEXT — refusing to generate answer")
     exit()
 
 # --- Synthesis Logic ---
