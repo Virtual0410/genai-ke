@@ -11,6 +11,7 @@ from retrieval.confidence import has_enough_context
 from retrieval.context_selector import select_context
 from llm.context_formatter import format_context
 from llm.prompt import SYSTEM_PROMPT
+from retrieval.stance import detect_stance, group_by_stance
 
 with open("data/processed/sample_chunks_multi.json", "r", encoding="utf-8") as f:
     chunks = json.load(f)
@@ -45,7 +46,7 @@ semantic_retriever = Retriever(embedder, vector_store)
 
 keyword_retriever = KeywordRetriever(metadata)
 
-query = "How do the papers compare explainable AI and federated learning?"
+query = "Do the papers agree on federated learning benefits?"
 
 semantic_results = semantic_retriever.retrieve(query)
 keyword_results = keyword_retriever.retrieve(query)
@@ -148,11 +149,22 @@ if not selected_chunks:
     print("NO TRUSTED CONTEXT — refusing to generate answer")
     exit()
 
+# --- Synthesis Logic ---
+if requires_synthesis(query):
+    grouped_chunks = group_chunks_by_source(selected_chunks)
+    synthesis_context = build_synthesis_context(grouped_chunks)
+    print("\nSynthesis Context Built:\n")
+    print(synthesis_context)
+
+# --- Stance Detection ---
+stance_groups = group_by_stance(selected_chunks)
+
+print("\nStance Summary:\n")
+for stance, items in stance_groups.items():
+    print(f"{stance}: {len(items)} sources")
+
+# --- Final Context Formatting ---
 context = format_context(selected_chunks)
 
 print("\nFinal context passed to LLM:\n")
 print(context)
-
-if requires_synthesis(query):
-    grouped_chunks = group_chunks_by_source(selected_chunks)
-    context = build_synthesis_context(grouped_chunks)
