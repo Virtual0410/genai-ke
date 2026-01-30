@@ -412,6 +412,88 @@ not merging sources blindly.
 
 ---
 
+## Module 13: Argument Comparison & Stance Detection (Day 14)
+
+This module introduces **stance detection** to help the research assistant
+identify agreement, disagreement, and neutrality across academic sources.
+
+Rather than blending evidence blindly, the assistant now evaluates how
+documents position themselves on a topic.
+
+---
+
+### Motivation
+
+Academic research rarely presents unanimous conclusions.
+A responsible research assistant should:
+
+- surface differing viewpoints
+- avoid forced consensus
+- preserve source attribution
+- highlight uncertainty when necessary
+
+Day 14 enables the assistant to reflect these principles.
+
+---
+
+### Stance Detection Logic
+
+The assistant evaluates retrieved chunks for linguistic signals that indicate:
+
+- **support** → benefits, improvements, effectiveness
+- **question** → limitations, challenges, risks
+- **mixed** → both positive and negative indicators
+- **neutral** → descriptive or technical discussion
+
+This classification helps group evidence by perspective.
+
+---
+
+### Stance Grouping
+
+Retrieved chunks are grouped by stance category to:
+
+- reveal agreement or disagreement
+- prevent blending conflicting claims
+- preserve academic neutrality
+
+This allows the assistant to present balanced interpretations.
+
+---
+
+### Observed Behavior
+
+Testing showed that the assistant:
+
+- avoids inferring agreement when only one source discusses a topic
+- defaults to neutral stance when evaluative language is absent
+- preserves citation traceability
+- surfaces uncertainty instead of speculation
+
+This demonstrates conservative and responsible academic reasoning.
+
+---
+
+### Limitations
+
+Current stance detection:
+
+- relies on keyword heuristics
+- may not capture nuanced academic arguments
+- requires multiple sources for meaningful comparison
+- can produce false conflict signals when topics differ
+
+These limitations are documented for transparency and future refinement.
+
+---
+
+### Key Insight
+
+> A research assistant should reveal differences in perspective,
+not force agreement where evidence is limited.
+
+---
+
 ### Status Update
 
 - [x] Document Ingestion
@@ -427,6 +509,7 @@ not merging sources blindly.
 - [x] Policy-Aware Context Selection
 - [x] Evaluation & Reliability Testing
 - [x] Multi-Hop Reasoning & Synthesis
-- [ ] Argument Comparison
+- [x] Argument Comparison & Stance Detection
 - [ ] Research Gap Detection
+- [ ] Insight Generation
 - [ ] UX Interface Layer
