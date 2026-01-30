@@ -1,0 +1,22 @@
+[
+  {
+    "type": "direct",
+    "query": "What future trends in machine learning are discussed?"
+  },
+  {
+    "type": "cross_doc",
+    "query": "How is explainable AI described across the papers?"
+  },
+  {
+    "type": "no_evidence",
+    "query": "What are the dangers of artificial general intelligence?"
+  },
+  {
+    "type": "conflict",
+    "query": "Do the sources agree on federated learning benefits?"
+  },
+  {
+    "type": "out_of_scope",
+    "query": "Who invented calculus?"
+  }
+]
