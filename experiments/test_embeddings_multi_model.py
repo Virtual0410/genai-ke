@@ -8,7 +8,7 @@ def load_chunks(path):
         return json.load(f)
 
 
-chunks = load_chunks("data/processed/sample_chunks.json")
+chunks = load_chunks("data/processed/sample_chunks_multi.json")
 
 models = [
     "all-MiniLM-L6-v2",

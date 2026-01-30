@@ -8,7 +8,7 @@ from retrieval.confidence import has_enough_context
 from llm.ollama_llm import OllamaLLM
 from prompts.rag_prompt import build_rag_prompt
 
-with open("data/processed/sample_chunks.json", "r", encoding="utf-8") as f:
+with open("data/processed/sample_chunks_multi.json", "r", encoding="utf-8") as f:
     chunks = json.load(f)
 
 texts = [c["text"] for c in chunks]

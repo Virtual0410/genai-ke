@@ -1,0 +1,81 @@
+PAGE 1: INTRODUCTION TO ML IN PERSONNEL MANAGEMENT
+--------------------------------------------------
+Machine Learning (ML) is increasingly used in personnel and human resource
+management to support data-driven decision-making. Personnel ML focuses on
+analyzing employee-related data to improve hiring, performance evaluation,
+retention, and workforce planning.
+
+Common data sources include resumes, application forms, performance reviews,
+attendance logs, engagement surveys, payroll data, and training records.
+These datasets may be structured (tables, scores) or unstructured (text,
+emails, feedback).
+
+Key objectives of personnel ML:
+- Improve quality and speed of recruitment
+- Reduce employee turnover
+- Identify high-potential employees
+- Detect bias and ensure fairness
+- Optimize training and development programs
+
+Challenges specific to personnel ML:
+- Data privacy and legal compliance (GDPR, labor laws)
+- Bias and discrimination risks
+- Interpretability of models
+- Ethical use of employee data
+
+Typical ML task types:
+- Classification (e.g., hire/no-hire, promotion readiness)
+- Regression (e.g., performance score prediction)
+- Clustering (e.g., employee segmentation)
+- Natural Language Processing (resume screening, feedback analysis)
+
+--------------------------------------------------
+
+
+PAGE 2: RECRUITMENT AND TALENT ACQUISITION
+-----------------------------------------
+ML plays a major role in modern recruitment pipelines. Automated resume
+screening systems use NLP techniques to extract skills, experience, and
+education from resumes and compare them against job requirements.
+
+Key techniques:
+- Keyword extraction and embeddings
+- Similarity scoring between resumes and job descriptions
+- Ranking candidates based on predicted job fit
+
+Common models:
+- Logistic Regression
+- Random Forests
+- Gradient Boosting
+- Transformer-based NLP models (for text-heavy tasks)
+
+Benefits:
+- Reduced time-to-hire
+- Consistent candidate evaluation
+- Ability to process large applicant pools
+
+Risks:
+- Historical hiring bias reflected in training data
+- Over-reliance on automated screening
+- Exclusion of non-traditional candidates
+
+Best practices:
+- Regular bias audits
+- Human-in-the-loop decision-making
+- Transparent scoring criteria
+- Diverse training datasets
+
+--------------------------------------------------
+
+
+PAGE 3: PERFORMANCE MANAGEMENT AND PREDICTION
+---------------------------------------------
+Performance management ML models aim to predict or evaluate employee
+performance using historical data. Inputs may include KPIs, peer reviews,
+manager ratings, project outcomes, and attendance patterns.
+
+Use cases:
+- Performance score prediction
+- Early identification of underperformers
+- Recognition of high-performing employees
+- Objective support for promot
