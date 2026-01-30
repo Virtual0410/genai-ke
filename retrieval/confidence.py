@@ -1,4 +1,4 @@
-def has_enough_context(results, min_results=1, min_score=0.35):
+def has_enough_context(results, min_results=1, min_score=0.45):
     """
     Decide whether retrieved context is strong enough.
     """
