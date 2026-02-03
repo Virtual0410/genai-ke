@@ -657,6 +657,114 @@ This marks a transition from retrieval system to research assistant.
 
 ---
 
+## Day 18: Grounded Answer Generation (Academic RAG Completion)
+
+Day 18 transforms the system from a retrieval engine into a fully
+functional academic research assistant capable of generating
+source-grounded answers using a local LLM.
+
+---
+
+### Grounded Answer Generation Layer
+
+A local LLM (via Ollama) is now used to generate answers strictly
+from retrieved and validated context.
+
+The answer generation module:
+- Receives curated context from the retrieval pipeline
+- Applies strict academic prompt rules
+- Generates citation-backed answers
+- Refuses to answer when evidence is insufficient
+
+This ensures answers remain traceable and verifiable.
+
+---
+
+### Citation Enforcement
+
+Generated answers must:
+- Reference provided sources
+- Avoid unsupported claims
+- Maintain academic neutrality
+
+If sources do not support the question, the system explicitly refuses.
+
+---
+
+### Refusal-First Safety Design
+
+If retrieval confidence or context quality is low, the system responds with:
+
+"The available sources do not provide enough evidence to answer this question."
+
+This prevents hallucination and maintains research integrity.
+
+---
+
+### Academic Tone Enforcement
+
+The system prompt enforces:
+- Neutral academic language
+- Evidence-based reasoning
+- No speculation
+- No unsupported generalization
+
+This mimics real academic writing standards.
+
+---
+
+### End-to-End RAG Completion
+
+The system now performs full pipeline reasoning:
+
+Query  
+→ Hybrid Retrieval  
+→ Reranking  
+→ Confidence Validation  
+→ Topic Coherence Filtering  
+→ Stance Detection  
+→ Research Gap Detection  
+→ Context Selection  
+→ Context Formatting  
+→ Grounded LLM Answer Generation  
+
+---
+
+### Key Insight
+
+A production-grade GenAI system must:
+- Control what reaches the LLM
+- Control how the LLM responds
+- Control when the LLM refuses
+
+Generation is the final step — not the first.
+
+---
+
+### System Capability After Day 18
+
+The GenAI Knowledge Engine can now:
+
+- Retrieve multi-source academic evidence
+- Detect stance diversity across sources
+- Identify research gaps automatically
+- Filter context by semantic and topical coherence
+- Generate citation-grounded academic answers
+- Refuse unsafe or unsupported queries
+- Operate fully offline using local models
+
+---
+
+### Architectural Milestone
+
+Day 18 marks the transition from:
+Retrieval System → Research Reasoning System
+
+The system now demonstrates behavior aligned with responsible AI and
+academic knowledge synthesis workflows.
+
+---
+
 ### Status Update
 
 - [x] Document Ingestion
@@ -674,5 +782,6 @@ This marks a transition from retrieval system to research assistant.
 - [x] Multi-Hop Reasoning & Synthesis
 - [x] Argument Comparison & Stance Detection
 - [X] Research Gap Detection
+- [x] Grounded Answer Generation
 - [ ] Insight Generation
 - [ ] UX Interface Layer
