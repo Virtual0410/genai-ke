@@ -15,6 +15,7 @@ from retrieval.stance import detect_stance, group_by_stance
 from retrieval.gap_detector import detect_research_gaps
 from llm.report_generator import generate_research_report
 from retrieval.coherence_filter import filter_by_topic_coherence
+from llm.answer_generator import generate_answer
 
 with open("data/processed/sample_chunks_multi.json", "r", encoding="utf-8") as f:
     chunks = json.load(f)
@@ -49,7 +50,7 @@ semantic_retriever = Retriever(embedder, vector_store)
 
 keyword_retriever = KeywordRetriever(metadata)
 
-query = "Do papers compare federated learning drawbacks?"
+query = "What future trends in machine learning are discussed?"
 
 semantic_results = semantic_retriever.retrieve(query)
 keyword_results = keyword_retriever.retrieve(query)
@@ -92,21 +93,33 @@ from retrieval.conflict import detect_conflict
 
 # Build document metadata map
 doc_meta = {}
+
 for r in final_results:
     d = r["data"]
-    doc_meta[d["doc_id"]] = {
-        "doc_type": d["doc_type"],
-        "published_date": d["published_date"],
-        "doc_name": d["doc_name"]
-    }
+    doc_id = d.get("doc_id")
+
+    if not doc_id:
+        continue
+
+    if doc_id not in doc_meta:
+        doc_meta[doc_id] = {
+            "doc_type": d.get("doc_type", "unknown"),
+            "published_date": d.get("published_date", "unknown"),
+            "doc_name": d.get("doc_name", doc_id)
+        }
+
 
 # Compute authority scores
 doc_authority = {}
 for doc_id, stats in doc_scores.items():
     doc_authority[doc_id] = authority_score(
-        stats,
-        doc_meta[doc_id]
-    )
+    stats,
+    doc_meta.get(doc_id, {
+        "doc_type": "unknown",
+        "published_date": "unknown",
+        "doc_name": doc_id
+    })
+)
 
 print("\nDocument authority ranking:\n")
 
@@ -115,7 +128,11 @@ for doc_id, score in sorted(
     key=lambda x: x[1],
     reverse=True
 ):
-    meta = doc_meta[doc_id]
+    meta = doc_meta.get(doc_id, {
+    "doc_type": "unknown",
+    "published_date": "unknown",
+    "doc_name": doc_id
+})
     print(f"{doc_id} ({meta['doc_type']}, {meta['published_date']}): {score:.3f}")
 
 
@@ -192,5 +209,15 @@ print(report)
 # --- Final Context Formatting ---
 context = format_context(selected_chunks)
 
+answer = generate_answer(
+    query=query,
+    context=context,
+    system_prompt=SYSTEM_PROMPT
+)
+
+print("\nFinal Answer:\n")
+print(answer)
+
 print("\nFinal context passed to LLM:\n")
 print(context)
+
