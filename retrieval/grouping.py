@@ -1,5 +1,7 @@
+"""
+Document grouping utilities.
+"""
 from collections import defaultdict
-
 
 def group_by_document(results):
     """
@@ -8,14 +10,16 @@ def group_by_document(results):
     grouped = defaultdict(list)
 
     for r in results:
-        doc_id = r["data"]["source"]
-        grouped[doc_id].append(r)
+        # Use doc_id as primary key, fallback to source
+        doc_id = r["data"].get("doc_id") or r["data"].get("source")
+        if doc_id:
+            grouped[doc_id].append(r)
 
     return dict(grouped)
 
 def score_documents(grouped_results):
     """
-    Compute a document-level score based on chunk scores.
+    Compute document-level score based on chunk scores.
     """
     doc_scores = {}
 

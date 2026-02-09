@@ -33,12 +33,12 @@ reranking:
 # ===== CONFIDENCE SETTINGS =====
 confidence:
   min_results: 1
-  min_score: 0.45
-  min_context_chars: 300
+  min_score: 0.35  # Lowered from 0.45 to be less restrictive
+  min_context_chars: 200  # Lowered from 300
 
 # ===== COHERENCE FILTER =====
 coherence:
-  enabled: false  # Disabled due to poor implementation
+  enabled: false  # Disabled - too restrictive, causes empty results
   min_term_overlap: 2
   use_stopwords: true
 
@@ -59,7 +59,7 @@ authority:
 context_selection:
   max_docs: 3  # Increased from 2
   max_chunks_per_doc: 4  # Increased from 3
-  min_authority_score: 0.3
+  min_authority_score: 0.1  # Lowered from 0.3 to be less restrictive
 
 # ===== CHUNKING STRATEGY =====
 chunking:
@@ -71,7 +71,7 @@ chunking:
 # ===== LLM SETTINGS =====
 llm:
   provider: "ollama"  # ollama, openai, anthropic
-  model_name: "mistral"
+  model_name: "phi:2.7b"  # Smaller model - mistral needs 8GB, phi needs 1.6GB
   temperature: 0.1
   max_tokens: 400
   top_p: 0.9

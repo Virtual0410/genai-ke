@@ -222,16 +222,35 @@ def run_query(query: str) -> dict:
         for doc_id, stats in doc_scores.items():
             meta = doc_meta.get(doc_id)
             if meta:
-                doc_authority[doc_id] = authority_score(stats, meta)
+                try:
+                    doc_authority[doc_id] = authority_score(stats, meta)
+                except Exception as e:
+                    # Fallback to just using relevance if authority scoring fails
+                    doc_authority[doc_id] = stats["max_score"]
+        
+        # If no authority scores computed, use all documents
+        if not doc_authority:
+            for doc_id in grouped.keys():
+                doc_authority[doc_id] = 1.0
         
         # ===== CONTEXT SELECTION =====
         selected_chunks = select_context(grouped, doc_authority)
         
         if not selected_chunks:
+            # Fallback: If authority filtering is too strict, just use top chunks by score
+            print("⚠️  Authority filtering too strict, using top chunks by relevance...")
+            all_chunks = []
+            for chunks in grouped.values():
+                all_chunks.extend(chunks)
+            all_chunks.sort(key=lambda x: x["score"], reverse=True)
+            max_chunks = get_config("context_selection.max_docs", 3) * get_config("context_selection.max_chunks_per_doc", 4)
+            selected_chunks = all_chunks[:max_chunks]
+            
+        if not selected_chunks:
             return {
-                "answer": "No trusted context available after authority filtering.",
+                "answer": "No context available after filtering.",
                 "sources": [],
-                "report": "Context selection produced no results.",
+                "report": "Context selection produced no results even with fallback.",
                 "stance": {},
                 "context": ""
             }

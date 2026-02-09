@@ -10,8 +10,8 @@ class Retriever:
         self,
         embedder: Embedder,
         vector_store: VectorStore,
-        top_k: int = 4,
-        score_threshold: float = 0.35
+        top_k: int = 10,  # Increased from 4 to get more candidates
+        score_threshold: float = 0.3  # Lowered from 0.35 to be less restrictive
     ):
         self.embedder = embedder
         self.vector_store = vector_store
