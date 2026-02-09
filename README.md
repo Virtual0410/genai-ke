@@ -783,5 +783,4 @@ academic knowledge synthesis workflows.
 - [x] Argument Comparison & Stance Detection
 - [X] Research Gap Detection
 - [x] Grounded Answer Generation
-- [ ] Insight Generation
 - [ ] UX Interface Layer

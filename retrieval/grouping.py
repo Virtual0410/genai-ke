@@ -8,7 +8,7 @@ def group_by_document(results):
     grouped = defaultdict(list)
 
     for r in results:
-        doc_id = r["data"]["doc_id"]
+        doc_id = r["data"]["source"]
         grouped[doc_id].append(r)
 
     return dict(grouped)

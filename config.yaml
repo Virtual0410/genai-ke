@@ -1,0 +1,98 @@
+# RAG System Configuration
+# All tunable parameters in one place
+
+# ===== EMBEDDING SETTINGS =====
+embedding:
+  model_name: "all-MiniLM-L6-v2"
+  normalize: true
+  use_cache: true
+
+# ===== RETRIEVAL SETTINGS =====
+retrieval:
+  # Semantic retrieval
+  semantic_top_k: 10
+  
+  # Keyword retrieval
+  keyword_top_k: 5
+  keyword_min_score: 0.4
+  
+  # Hybrid merge
+  merge_strategy: "max"  # max, average, weighted
+
+# ===== RERANKING SETTINGS =====
+reranking:
+  # Chunk length penalties
+  min_chunk_length: 100
+  max_chunk_length: 1000
+  short_chunk_penalty: 0.5
+  long_chunk_penalty: 0.8
+  
+  # Query-specific boosts (removed - use semantic similarity instead)
+  # keyword_boost_enabled: false
+
+# ===== CONFIDENCE SETTINGS =====
+confidence:
+  min_results: 1
+  min_score: 0.45
+  min_context_chars: 300
+
+# ===== COHERENCE FILTER =====
+coherence:
+  enabled: false  # Disabled due to poor implementation
+  min_term_overlap: 2
+  use_stopwords: true
+
+# ===== AUTHORITY SCORING =====
+authority:
+  relevance_weight: 0.5
+  trust_weight: 0.3
+  recency_weight: 0.2
+  
+  # Document type trust scores
+  trust_scores:
+    research_paper: 1.0
+    blog: 0.6
+    note: 0.5
+    documentation: 0.8
+
+# ===== CONTEXT SELECTION =====
+context_selection:
+  max_docs: 3  # Increased from 2
+  max_chunks_per_doc: 4  # Increased from 3
+  min_authority_score: 0.3
+
+# ===== CHUNKING STRATEGY =====
+chunking:
+  strategy: "semantic"  # fixed_size or semantic
+  fixed_size_chars: 500
+  fixed_size_overlap: 50
+  semantic_min_length: 50
+
+# ===== LLM SETTINGS =====
+llm:
+  provider: "ollama"  # ollama, openai, anthropic
+  model_name: "mistral"
+  temperature: 0.1
+  max_tokens: 400
+  top_p: 0.9
+
+# ===== DATA PATHS =====
+data:
+  processed_chunks: "data/processed/sample_chunks_multi.json"
+  cache_dir: "cache"
+  
+# ===== SYNTHESIS SETTINGS =====
+synthesis:
+  enabled: true
+  min_sources_for_comparison: 2
+  
+# ===== STANCE DETECTION =====
+stance:
+  enabled: true
+  method: "keyword"  # keyword or semantic (future)
+
+# ===== RESEARCH GAP DETECTION =====
+gap_detection:
+  enabled: true
+  min_sources_threshold: 2
+  coverage_threshold: 0.5
